@@ -1,3 +1,4 @@
+#include "gl_core_4_4.h"
 #include "nsfw.h"
 
 using namespace nsfw::ASSET;
@@ -45,21 +46,108 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	ASSET_LOG(GL_HANDLE_TYPE::IBO);
 	ASSET_LOG(GL_HANDLE_TYPE::VAO);
 	ASSET_LOG(GL_HANDLE_TYPE::SIZE);
-	TODO_D("Should generate VBO, IBO, VAO, and SIZE using the parameters, storing them in the 'handles' map.\nThis is where vertex attributes are set!");
+	char * name2 = "";
+	strcpy_s(name2, sizeof(name), name);
+
+	GL_HANDLE newVAO;
+	GL_HANDLE newIBO;
+	GL_HANDLE newVBO;
+	GL_HANDLE newSize = 0;
+
+	glGenVertexArrays(1, &newVAO);
+	glGenBuffers(1, &newVBO);
+	glGenBuffers(1, &newIBO);
+
+	glBindVertexArray(newVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, newVBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, newIBO);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
+
+	glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4) * 2));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec2) + (sizeof(glm::vec4) * 2)));
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	if (setINTERNAL(ASSET::VAO, name2, newVAO)) {
+		if (setINTERNAL(ASSET::VBO, name2, newVBO)) {
+			if (setINTERNAL(ASSET::IBO, name2, newIBO)) {
+				return setINTERNAL(ASSET::SIZE, name2, newSize);
+			}
+		}
+	}
+	
+	//TODO_D("Should generate VBO, IBO, VAO, and SIZE using the parameters, storing them in the 'handles' map.\nThis is where vertex attributes are set!");
 	return false;
 }
 
 bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned nTextures, const char * names[], const unsigned depths[])
 {
 	ASSET_LOG(GL_HANDLE_TYPE::FBO);
-	TODO_D("Create an FBO! Array parameters are for the render targets, which this function should also generate!\nuse makeTexture.\nNOTE THAT THERE IS NO FUNCTION SETUP FOR MAKING RENDER BUFFER OBJECTS.");
+
+	GL_HANDLE newFBO;
+	GL_HANDLE newRenderBuff;
+	GL_HANDLE* newTexts = new GL_HANDLE[nTextures];
+
+	for (int i = 0; i < nTextures; i++) {
+		if (makeTexture(names[i], w, h, depths[i])) {
+			newTexts[i] = instance().get<ASSET::TEXTURE>(name);
+		}
+		else 
+		{
+			return false;
+		}
+	}
+
+	glGenFramebuffers(1, &newFBO);
+	glGenRenderbuffers(1, &newRenderBuff);
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, newFBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, newRenderBuff);
+
+	for (int i = 0; i < nTextures; i++) {
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, newTexts[i], 0);
+	}
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newRenderBuff);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	//TODO_D("Create an FBO! Array parameters are for the render targets, which this function should also generate!\nuse makeTexture.\nNOTE THAT THERE IS NO FUNCTION SETUP FOR MAKING RENDER BUFFER OBJECTS.");
 	return false;
 }
 
 bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsigned depth, const char *pixels)
 {
 	ASSET_LOG(GL_HANDLE_TYPE::TEXTURE);
-	TODO_D("Allocate a texture using the given space/dimensions. Should work if 'pixels' is null, so that you can use this same function with makeFBO\n note that Dept will use a GL value.");
+	char * name2 = "";
+	strcpy_s(name2, sizeof(name), name);
+	GL_HANDLE newTex;
+
+	glGenTextures(1, &newTex);
+
+	glBindTexture(GL_TEXTURE_2D, newTex);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, depth, w, h, 0, depth, GL_UNSIGNED_BYTE, pixels);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return setINTERNAL(ASSET::TEXTURE, name2, newTex);
+
+	//TODO_D("Allocate a texture using the given space/dimensions. Should work if 'pixels' is null, so that you can use this same function with makeFBO\n note that Dept will use a GL value.");
 	return false;
 }
 
