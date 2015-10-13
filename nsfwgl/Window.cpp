@@ -1,4 +1,5 @@
 #include "nsfw.h"
+#include "GLFW\glfw3.h"
 
 void nsfw::Window::init(unsigned width, unsigned height)
 {
