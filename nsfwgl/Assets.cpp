@@ -244,6 +244,9 @@ bool nsfw::Assets::loadShader(const char * name, const char * vpath, const char 
 		delete[] infoLog;
 	}
 
+	glDeleteShader(vShader);
+	glDeleteShader(fShader);
+
 	return setINTERNAL(ASSET::SHADER, name, program);
 	//TODO_D("Load shader from a file.");
 }
@@ -367,13 +370,13 @@ void nsfw::Assets::term()
 	{
 		switch (k.first.first)
 		{
-		case VBO:		glDeleteBuffers(1, &k.second); /*TODO_D("VBO deletion");*/		break;
-		case IBO:		glDeleteBuffers(1, &k.second); /*TODO_D("IBO deletion");*/		break;
-		case VAO:		/*TODO_D("VAO deletion");*/		break;
-		case SHADER:	TODO_D("Shader deletion");	break;
-		case TEXTURE:	TODO_D("Texture deletion"); break;
-		case RBO:		TODO_D("RBO deletion");		break;
-		case FBO:		TODO_D("FBO deletion");		break;
+		case VBO:		glDeleteBuffers(1, &k.second);		 /*TODO_D("VBO deletion");*/break;
+		case IBO:		glDeleteBuffers(1, &k.second);		 /*TODO_D("IBO deletion");*/break;
+		case VAO:		glDeleteVertexArrays(1, &k.second);  /*TODO_D("VAO deletion");*/break;
+		case SHADER:	glDeleteProgram(k.second);		  /*TODO_D("Shader deletion");*/break;
+		case TEXTURE:	glDeleteTextures(1, &k.second);  /*TODO_D("Texture deletion");*/break;
+		case RBO:		glDeleteRenderbuffers(1, &k.second); /*TODO_D("RBO deletion");*/break;
+		case FBO:		glDeleteFramebuffers(1, &k.second);  /*TODO_D("FBO deletion");*/break;
 		}
 	}
 }
