@@ -207,7 +207,7 @@ bool nsfw::Assets::loadTexture(const char * name, const char * path)
 nsfw::GL_HANDLE nsfw::Assets::internLoadShader(unsigned type, const char* filename) {
 	std::fstream in(filename);
 	std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-	char* src = new char[contents.length + 1];
+	char* src = new char[contents.length() + 1];
 	strncpy(src, contents.c_str(), contents.length() + 1);
 
 	GL_HANDLE shader = glCreateShader(type);
