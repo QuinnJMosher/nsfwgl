@@ -147,8 +147,6 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsigned depth, const char *pixels)
 {
 	ASSET_LOG(GL_HANDLE_TYPE::TEXTURE);
-	char * name2 = "";
-	strcpy_s(name2, sizeof(name), name);
 	GL_HANDLE newTex;
 
 	glGenTextures(1, &newTex);
@@ -161,7 +159,7 @@ bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsign
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	return setINTERNAL(ASSET::TEXTURE, name2, newTex);
+	return setINTERNAL(ASSET::TEXTURE, name, newTex);
 
 	//TODO_D("Allocate a texture using the given space/dimensions. Should work if 'pixels' is null, so that you can use this same function with makeFBO\n note that Dept will use a GL value.");
 	return false;
@@ -318,43 +316,46 @@ bool nsfw::Assets::loadOBJ(const char * name, const char * path)
 	printf(err.c_str());
 
 	for (unsigned meshIndex = 0; meshIndex < shapes.size(); meshIndex++) {
-		tinyobj::mesh_t* curMesh = &shapes[meshIndex].mesh;
+		tinyobj::mesh_t &curMesh = shapes[meshIndex].mesh;
 
 		bool minusOne = false;
-		for (unsigned j = 0; j < curMesh->positions.size() / 3; j++) {
+		for (unsigned j = 0; j < curMesh.positions.size() / 3; j++) {
 			Vertex newVert;
 
-			newVert.position.x = curMesh->positions[3 * j + 0];
-			newVert.position.y = curMesh->positions[3 * j + 1];
-			newVert.position.z = curMesh->positions[3 * j + 2];
+			newVert.position.x = curMesh.positions[3 * j + 0];
+			newVert.position.y = curMesh.positions[3 * j + 1];
+			newVert.position.z = curMesh.positions[3 * j + 2];
 			newVert.position.w = 1;
 
-			newVert.normal.x = curMesh->normals[3 * j + 0];
-			newVert.normal.y = curMesh->normals[3 * j + 1];
-			newVert.normal.z = curMesh->normals[3 * j + 2];
+			newVert.normal.x = curMesh.normals[3 * j + 0];
+			newVert.normal.y = curMesh.normals[3 * j + 1];
+			newVert.normal.z = curMesh.normals[3 * j + 2];
 			newVert.normal.w = 1;
 
 			newVert.tangent = vec4(0);
 
 			if (minusOne) {
-				newVert.texCoord.x = curMesh->texcoords[3 * j - 1];
-				newVert.texCoord.y = curMesh->texcoords[3 * j + 0];
+				newVert.texCoord.x = curMesh.texcoords[3 * j - 1];
+				newVert.texCoord.y = curMesh.texcoords[3 * j + 0];
 			}
 			else 
 			{
-				newVert.texCoord.x = curMesh->texcoords[3 * j + 0];
-				newVert.texCoord.y = curMesh->texcoords[3 * j + 1];
+				newVert.texCoord.x = curMesh.texcoords[3 * j + 0];
+				newVert.texCoord.y = curMesh.texcoords[3 * j + 1];
 			}
 
 			minusOne = !minusOne;
 
 			verticies.emplace_back(newVert);
 		}
-
-		indicies.emplace_back(curMesh->indices);
+		for (unsigned k = 0; k < curMesh.indices.size(); k++) {
+			indicies.emplace_back(curMesh.indices.at(k));
+		}
+		//indicies.emplace_back(curMesh.indices.data());
 	}
 
 	return makeVAO(name, verticies.data(), verticies.size(), indicies.data(), indicies.size());
+	return false;
 
 	//TODO_D("OBJ file-loading support needed.\nThis function should call makeVAO and loadTexture (if necessary), MAKE SURE TO TAKE THE OBJ DATA AND PROPERLY LINE IT UP WITH YOUR VERTEX ATTRIBUTES (or interleave the data into your vertex struct).\n");
 }
