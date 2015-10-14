@@ -33,6 +33,7 @@
 		a.get<TEXTURE>("JohnDiffuseMap");
 		a.get(TEXTURE,"JohnDiffuseMap");
 		
+		// hotdog
 
 		*** Implement the necessary LOAD and MAKE functions, as well as the TERM function.
 */

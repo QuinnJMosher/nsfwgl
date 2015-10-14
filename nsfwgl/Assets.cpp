@@ -5,7 +5,7 @@
 //#define STB_IMAGE_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 #include "fbx\FBXFile.h"
-#include <fstream>;
+#include <fstream>
 
 using namespace nsfw::ASSET;
 
@@ -103,7 +103,7 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	GL_HANDLE newRenderBuff = 0;
 	GL_HANDLE* newTexts = new GL_HANDLE[nTextures];
 
-	for (int i = 0; i < nTextures; i++) {
+	for (unsigned i = 0; i < nTextures; i++) {
 		if (depths[i] == GL_DEPTH_COMPONENT) {
 			ASSET_LOG(GL_HANDLE_TYPE::RBO);
 			glGenRenderbuffers(1, &newRenderBuff);
@@ -126,7 +126,7 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, newFBO);
 
-	for (int i = 0; i < nTextures; i++) {
+	for (unsigned i = 0; i < nTextures; i++) {
 		if (depths[i] == GL_DEPTH_COMPONENT) {
 			glBindRenderbuffer(GL_RENDERBUFFER, newTexts[i]);
 			glRenderbufferStorage(GL_FRAMEBUFFER, GL_DEPTH_COMPONENT24, w, h);
@@ -169,7 +169,6 @@ bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsign
 
 bool nsfw::Assets::loadTexture(const char * name, const char * path)
 {
-	GL_HANDLE texture;
 	int width, height, format;
 	unsigned char* data = stbi_load(path, &width, &height, &format, STBI_default);
 
@@ -274,11 +273,11 @@ bool nsfw::Assets::loadFBX(const char * name, const char * path)
 	FBXFile fbxFile;
 	fbxFile.load(path);
 
-	for (int i = 0; i < fbxFile.getMeshCount(); i++) {
+	for (unsigned i = 0; i < fbxFile.getMeshCount(); i++) {
 		FBXMeshNode* modelData = fbxFile.getMeshByIndex(i);
 		Vertex* vertices = new Vertex[modelData->m_vertices.size()];
 
-		for (int j = 0; j < modelData->m_vertices.size(); j++) {
+		for (unsigned j = 0; j < modelData->m_vertices.size(); j++) {
 			Vertex newVert;
 			newVert.position = modelData->m_vertices[i].position;
 			newVert.normal = modelData->m_vertices[i].normal;
@@ -293,7 +292,7 @@ bool nsfw::Assets::loadFBX(const char * name, const char * path)
 	}
 
 	fbxFile.initialiseOpenGLTextures();
-	for (int i = 0; i < fbxFile.getTextureCount(); i++) {
+	for (unsigned i = 0; i < fbxFile.getTextureCount(); i++) {
 		FBXTexture* tex = fbxFile.getTextureByIndex(i);
 
 		std::string newName = namePrefix + tex->name;
@@ -318,11 +317,11 @@ bool nsfw::Assets::loadOBJ(const char * name, const char * path)
 	std::string err = tinyobj::LoadObj(shapes, mats, path);
 	printf(err.c_str());
 
-	for (int meshIndex = 0; meshIndex < shapes.size(); meshIndex++) {
+	for (unsigned meshIndex = 0; meshIndex < shapes.size(); meshIndex++) {
 		tinyobj::mesh_t* curMesh = &shapes[meshIndex].mesh;
 
 		bool minusOne = false;
-		for (int j = 0; j < curMesh->positions.size() / 3; j++) {
+		for (unsigned j = 0; j < curMesh->positions.size() / 3; j++) {
 			Vertex newVert;
 
 			newVert.position.x = curMesh->positions[3 * j + 0];

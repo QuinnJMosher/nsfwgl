@@ -1,5 +1,5 @@
-#include "nsfw.h"
 #include "gl_core_4_4.h"
+#include "nsfw.h"
 
 // Each Case should set up a uniform using the pass parameters
 bool nsfw::RenderPass::setUniform(const char *name, nsfw::UNIFORM::TYPE type, const void *value, unsigned count, bool normalize) 
@@ -8,8 +8,8 @@ bool nsfw::RenderPass::setUniform(const char *name, nsfw::UNIFORM::TYPE type, co
 
 	float* castFloat;
 	castFloat = (float*)value;
-	int* castInt;
-	castInt = (int*)value;
+	unsigned* castInt;
+	castInt = (unsigned*)value;
 
 	switch (type)
 	{
