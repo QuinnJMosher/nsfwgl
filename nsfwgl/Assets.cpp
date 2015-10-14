@@ -100,26 +100,38 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	ASSET_LOG(GL_HANDLE_TYPE::FBO);
 
 	GL_HANDLE newFBO;
-	GL_HANDLE newRenderBuff;
+	GL_HANDLE newRenderBuff = 0;
 	GL_HANDLE* newTexts = new GL_HANDLE[nTextures];
 
 	for (int i = 0; i < nTextures; i++) {
-		if (makeTexture(names[i], w, h, depths[i])) {
-			newTexts[i] = instance().get<ASSET::TEXTURE>(name);
+		if (depths[i] == GL_DEPTH_COMPONENT) {
+			ASSET_LOG(GL_HANDLE_TYPE::RBO);
+			glGenRenderbuffers(1, &newRenderBuff);
+			newTexts[i] = newRenderBuff;
+			setINTERNAL(ASSET::RBO, names[i], newRenderBuff);
 		}
 		else 
 		{
-			return false;
+			if (makeTexture(names[i], w, h, depths[i])) {
+				newTexts[i] = instance().get<ASSET::TEXTURE>(name);
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 
 	glGenFramebuffers(1, &newFBO);
-	glGenRenderbuffers(1, &newRenderBuff);
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, newFBO);
-	glBindRenderbuffer(GL_RENDERBUFFER, newRenderBuff);
 
 	for (int i = 0; i < nTextures; i++) {
+		if (depths[i] == GL_DEPTH_COMPONENT) {
+			glBindRenderbuffer(GL_RENDERBUFFER, newTexts[i]);
+			glRenderbufferStorage(GL_FRAMEBUFFER, GL_DEPTH_COMPONENT24, w, h);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newTexts[i]);
+		}
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, newTexts[i], 0);
 	}
 
@@ -129,7 +141,7 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	//TODO_D("Create an FBO! Array parameters are for the render targets, which this function should also generate!\nuse makeTexture.\nNOTE THAT THERE IS NO FUNCTION SETUP FOR MAKING RENDER BUFFER OBJECTS.");
-	return false;
+	return true;
 }
 
 bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsigned depth, const char *pixels)
