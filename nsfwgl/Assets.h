@@ -46,6 +46,18 @@ namespace nsfw
 		enum GL_HANDLE_TYPE { eNONE, VAO, IBO, VBO, SIZE, FBO, RBO, TEXTURE, SHADER, eSIZE };
 		
 	}
+
+	namespace DEPTH {
+		enum GL_DEPTH_TYPE {
+			RED = 0x1903,
+			RG = 0x8227,
+			RGB = 0x1907,
+			RGB8 = 0x8051,
+			RGB32 = 0x8815,
+			RGBA = 0x1908,
+			DEPTH = 0x1902
+		};
+	}
 		
 	extern const char *TYPE_NAMES[];
 	// Use a handle type and name to use as an index for each asset

@@ -126,16 +126,36 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, newFBO);
 
+	std::vector<GLenum>drawBuffers = std::vector<GLenum>();
+
 	for (unsigned i = 0; i < nTextures; i++) {
 		if (depths[i] == GL_DEPTH_COMPONENT) {
 			glBindRenderbuffer(GL_RENDERBUFFER, newTexts[i]);
 			glRenderbufferStorage(GL_FRAMEBUFFER, GL_DEPTH_COMPONENT24, w, h);
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newTexts[i]);
+			drawBuffers.emplace_back(GL_DEPTH_ATTACHMENT);
 		}
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, newTexts[i], 0);
+		else 
+		{
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, newTexts[i], 0);
+			drawBuffers.emplace_back(GL_COLOR_ATTACHMENT0 + i);
+		}
+
 	}
 
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newRenderBuff);
+	if (newRenderBuff != 0) {
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newRenderBuff);
+	}
+
+	glDrawBuffers(drawBuffers.size(), drawBuffers.data());
+
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (status != GL_FRAMEBUFFER_COMPLETE) {
+		printf("Framebuffer Error!\n");
+		if (status == GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT) {
+			printf("current Err\n");
+		}
+	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
