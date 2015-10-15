@@ -1,5 +1,8 @@
 #pragma once
-#include "nsfw.h"
+#include "../nsfwgl/nsfw.h"
+
+#include "../nsfwgl/Assets.h"
+#include "../nsfwgl/Window.h"
 
 namespace nsfw
 {

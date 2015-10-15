@@ -7,6 +7,9 @@
 #include "fbx\FBXFile.h"
 #include <fstream>
 
+#include "Vertex.h"
+#include "Assets.h"
+
 using namespace nsfw::ASSET;
 
 const char *nsfw::TYPE_NAMES[eSIZE + 1] = { "NONE","vao","ibo","vbo","tri-size","fbo","rbo","texture","shader","SIZE" };

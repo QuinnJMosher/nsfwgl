@@ -24,11 +24,11 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CPass.h">
-      <Filter>Header Files\Passes</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -40,9 +40,6 @@
     </ClInclude>
     <ClInclude Include="DefApp.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LPassD.h">
-      <Filter>Header Files\Passes</Filter>
     </ClInclude>
     <ClInclude Include="GPass.h">
       <Filter>Header Files\Passes</Filter>

@@ -6,10 +6,16 @@
 #include "Camera.h"
 
 #include "GPass.h"
-#include "CPass.h"
-#include "LPassD.h"
+//#include "CPass.h"
+//#include "LPassD.h"
 
 using namespace nsfw;
+
+#include "DefApp.h"
+
+#include <glm\glm.hpp>
+
+using glm::mat4;
 
 int main()
 {
@@ -70,8 +76,8 @@ void DeferredApplication::onPlay()
 	TODO_D("Initialize our render passes!");
 
 	m_geometryPass			= new GPass ("GeometryPassPhong", "GeometryPass");
-	m_directionalLightPass  = new LPassD("LightPassDirectional", "LightPass");
-	m_compositePass			= new CPass ("CompPass", "Screen"); // Screen is defined in nsfw::Assets::init()
+	//m_directionalLightPass  = new LPassD("LightPassDirectional", "LightPass");
+	//m_compositePass			= new CPass ("CompPass", "Screen"); // Screen is defined in nsfw::Assets::init()
 }
 
 void DeferredApplication::onStep()
@@ -86,13 +92,13 @@ void DeferredApplication::onStep()
 	m_geometryPass->draw(*m_camera, *m_soulspear);
 	m_geometryPass->post();
 
-	m_directionalLightPass->prep();
-	m_directionalLightPass->draw(*m_camera, *m_light);
-	m_directionalLightPass->post();
+	//m_directionalLightPass->prep();
+	//m_directionalLightPass->draw(*m_camera, *m_light);
+	//m_directionalLightPass->post();
 
-	m_compositePass->prep();
-	m_compositePass->draw();
-	m_compositePass->post();
+	//m_compositePass->prep();
+	//m_compositePass->draw();
+	//m_compositePass->post();
 }
 
 void DeferredApplication::onTerm()
@@ -101,7 +107,7 @@ void DeferredApplication::onTerm()
 	delete m_light;
 	delete m_soulspear;
 
-	delete m_compositePass;
 	delete m_geometryPass;
-	delete m_directionalLightPass;
+	//delete m_compositePass;
+	//delete m_directionalLightPass;
 }

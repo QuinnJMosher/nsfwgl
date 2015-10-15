@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../nsfwgl/gl_core_4_4.h"
 #include "../nsfwgl/nsfw.h"
 
 #include "Camera.h"
@@ -16,8 +16,18 @@ public:
 												 {}
 
 
-	void prep() { TODO_D("glUseProgram, glClear, glBindFrameBuffer, glViewPort, glEnable etc..."); }
-	void post() { TODO_D("Unset any gl settings"); }
+	void prep() { 
+		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
+		glClearColor(0, 0, 0, 0);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glUseProgram(*shader);
+		//TODO_D("glUseProgram, glClear, glBindFrameBuffer, glViewPort, glEnable etc..."); 
+	}
+	void post() { 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glUseProgram(0);
+		//TODO_D("Unset any gl settings"); 
+	}
 
 
 	void draw()
@@ -34,6 +44,8 @@ public:
 		unsigned quadVAOHandle = nsfw::Assets::instance().get<nsfw::ASSET::VAO>("Quad");
 		unsigned quadNumtris   = nsfw::Assets::instance().get<nsfw::ASSET::SIZE>("Quad");
 
-		TODO_D("GL BindVAO/DrawElements with quad size and vao");
+		glBindVertexArray(quadVAOHandle);
+		glDrawArrays(GL_TRIANGLES, 0, quadNumtris);
+		//TODO_D("GL BindVAO/DrawElements with quad size and vao");
 	}
 };

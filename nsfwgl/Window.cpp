@@ -1,6 +1,12 @@
+#include "Window.h"
+
 #include "gl_core_4_4.h"
 #include "nsfw.h"
 #include "GLFW\glfw3.h"
+
+#include <glm\glm.hpp>
+#include <glm\ext.hpp>
+
 
 void nsfw::Window::init(unsigned width, unsigned height)
 {
