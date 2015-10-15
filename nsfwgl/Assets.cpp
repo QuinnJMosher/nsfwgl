@@ -54,7 +54,7 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	ASSET_LOG(GL_HANDLE_TYPE::VBO);
 	ASSET_LOG(GL_HANDLE_TYPE::IBO);
 	ASSET_LOG(GL_HANDLE_TYPE::VAO);
-	ASSET_LOG(GL_HANDLE_TYPE::SIZE);
+	ASSET_LOG(GL_HANDLE_TYPE::VERTEX_COUNT);
 
 	GL_HANDLE newVAO;
 	GL_HANDLE newIBO;
@@ -89,12 +89,12 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	if (setINTERNAL(ASSET::VAO, name, newVAO)) {
 		if (setINTERNAL(ASSET::VBO, name, newVBO)) {
 			if (setINTERNAL(ASSET::IBO, name, newIBO)) {
-				return setINTERNAL(ASSET::SIZE, name, newSize);
+				return setINTERNAL(ASSET::VERTEX_COUNT, name, newSize);
 			}
 		}
 	}
 	
-	//TODO_D("Should generate VBO, IBO, VAO, and SIZE using the parameters, storing them in the 'handles' map.\nThis is where vertex attributes are set!");
+	//TODO_D("Should generate VBO, IBO, VAO, and VERTEX_COUNT using the parameters, storing them in the 'handles' map.\nThis is where vertex attributes are set!");
 	return false;
 }
 

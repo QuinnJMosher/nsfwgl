@@ -10,7 +10,7 @@ struct Geometry
 	glm::mat4 transform;
 
 	nsfw::Asset<VAO> mesh;
-	nsfw::Asset<nsfw::ASSET::SIZE> tris;
+	nsfw::Asset<nsfw::ASSET::VERTEX_COUNT> tris;
 
 	nsfw::Asset<TEXTURE> diffuse;
 	nsfw::Asset<TEXTURE> normal;

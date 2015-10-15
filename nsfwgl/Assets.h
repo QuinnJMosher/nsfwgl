@@ -43,7 +43,7 @@ namespace nsfw
 	// Keep track of the type of handle
 	namespace ASSET
 	{
-		enum GL_HANDLE_TYPE { eNONE, VAO, IBO, VBO, SIZE, FBO, RBO, TEXTURE, SHADER, eSIZE };
+		enum GL_HANDLE_TYPE { eNONE, VAO, IBO, VBO, VERTEX_COUNT, FBO, RBO, TEXTURE, SHADER, eSIZE };
 		
 	}
 

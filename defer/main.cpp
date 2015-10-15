@@ -6,8 +6,8 @@
 #include "Camera.h"
 
 #include "GPass.h"
-//#include "CPass.h"
-//#include "LPassD.h"
+#include "CPass.h"
+#include "LPassD.h"
 
 using namespace nsfw;
 
@@ -46,7 +46,7 @@ void DeferredApplication::onInit()
 	// Load Shaders
 	a.loadShader("GeometryPassPhong", "/path/to/gpass/Phong/vertex", "/path/to/gpass/Phong/fragment");
 	a.loadShader("LightPassDirectional", "/path/to/lpass/Directional/vertex", "/path/to/lpass/Directional/fragment");
-	//a.loadShader("LightPassPoint", "/path/to/lpass/Point/vertex", "/path/to/lpass/Point/fragment");
+	a.loadShader("LightPassPoint", "/path/to/lpass/Point/vertex", "/path/to/lpass/Point/fragment");
 	a.loadShader("CompPass", "/path/to/cpass/vertex", "/path/to/cpass/fragment");
 
 	// Load any other textures and geometry we want to use
@@ -76,8 +76,8 @@ void DeferredApplication::onPlay()
 	TODO_D("Initialize our render passes!");
 
 	m_geometryPass			= new GPass ("GeometryPassPhong", "GeometryPass");
-	//m_directionalLightPass  = new LPassD("LightPassDirectional", "LightPass");
-	//m_compositePass			= new CPass ("CompPass", "Screen"); // Screen is defined in nsfw::Assets::init()
+	m_directionalLightPass  = new LPassD("LightPassDirectional", "LightPass");
+	m_compositePass			= new CPass ("CompPass", "Screen"); // Screen is defined in nsfw::Assets::init()
 }
 
 void DeferredApplication::onStep()
@@ -92,13 +92,13 @@ void DeferredApplication::onStep()
 	m_geometryPass->draw(*m_camera, *m_soulspear);
 	m_geometryPass->post();
 
-	//m_directionalLightPass->prep();
-	//m_directionalLightPass->draw(*m_camera, *m_light);
-	//m_directionalLightPass->post();
+	m_directionalLightPass->prep();
+	m_directionalLightPass->draw(*m_camera, *m_light);
+	m_directionalLightPass->post();
 
-	//m_compositePass->prep();
-	//m_compositePass->draw();
-	//m_compositePass->post();
+	m_compositePass->prep();
+	m_compositePass->draw();
+	m_compositePass->post();
 }
 
 void DeferredApplication::onTerm()
@@ -108,6 +108,6 @@ void DeferredApplication::onTerm()
 	delete m_soulspear;
 
 	delete m_geometryPass;
-	//delete m_compositePass;
-	//delete m_directionalLightPass;
+	delete m_compositePass;
+	delete m_directionalLightPass;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "../nsfwgl/gl_core_4_4.h"
 #include "../nsfwgl/nsfw.h"
-
+#include "../nsfwgl/render.h"
 #include "Camera.h"
 
 class CPass : public nsfw::RenderPass
@@ -42,7 +42,7 @@ public:
 		setUniform("TexelScalar", nsfw::UNIFORM::MAT4, glm::value_ptr(nsfw::Window::instance().getTexelAdjustmentMatrix()));
 
 		unsigned quadVAOHandle = nsfw::Assets::instance().get<nsfw::ASSET::VAO>("Quad");
-		unsigned quadNumtris   = nsfw::Assets::instance().get<nsfw::ASSET::SIZE>("Quad");
+		unsigned quadNumtris   = nsfw::Assets::instance().get<nsfw::ASSET::VERTEX_COUNT>("Quad");
 
 		glBindVertexArray(quadVAOHandle);
 		glDrawArrays(GL_TRIANGLES, 0, quadNumtris);
