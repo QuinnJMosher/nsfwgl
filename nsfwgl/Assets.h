@@ -52,8 +52,6 @@ namespace nsfw
 			RED = 0x1903,
 			RG = 0x8227,
 			RGB = 0x1907,
-			RGB8 = 0x8051,
-			RGB32 = 0x8815,
 			RGBA = 0x1908,
 			DEPTH = 0x1902
 		};

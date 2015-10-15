@@ -29,12 +29,12 @@ void DeferredApplication::onInit()
 	auto &a = nsfw::Assets::instance();
 
 	// Setup FBOs
-	const char *gpassTextureNames[] = { "GPassAlbedo","GPassPosition","GPassNormal","GPassDepth" };
-	const unsigned gpassDepths[] = { DEPTH::RGB8, DEPTH::RGB32, DEPTH::RGB32, DEPTH::DEPTH }; // GL_RGB8, GL_RGB32, GL_RGB32, GL_DEPTH_COMPONENT
-	a.makeFBO("GeometryPass", w.getWidth(), w.getHeight(), 4, gpassTextureNames, gpassDepths);
+	const char *gpassTextureNames[] = { "GPassAlbedo","GPassPosition","GPassNormal"};
+	const unsigned gpassDepths[] = { DEPTH::RGB, DEPTH::RGB, DEPTH::RGB}; // GL_RGB8, GL_RGB32, GL_RGB32, GL_DEPTH_COMPONENT
+	a.makeFBO("GeometryPass", w.getWidth(), w.getHeight(), 3, gpassTextureNames, gpassDepths);
 
 	const char *lpassTextureNames[] = { "LPassColor" };
-	const unsigned lpassDepths[] = { 0 }; // GL_RGB8
+	const unsigned lpassDepths[] = { DEPTH::RGB }; // GL_RGB8
 	a.makeFBO("LightPass", w.getWidth(), w.getHeight(), 1, lpassTextureNames, lpassDepths); 
 
 	// Load Shaders

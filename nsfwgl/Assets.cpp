@@ -113,7 +113,7 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 		else 
 		{
 			if (makeTexture(names[i], w, h, depths[i])) {
-				newTexts[i] = instance().get<ASSET::TEXTURE>(name);
+				newTexts[i] = instance().get<ASSET::TEXTURE>(names[i]);
 			}
 			else
 			{
@@ -133,7 +133,7 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 			glBindRenderbuffer(GL_RENDERBUFFER, newTexts[i]);
 			glRenderbufferStorage(GL_FRAMEBUFFER, GL_DEPTH_COMPONENT24, w, h);
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newTexts[i]);
-			drawBuffers.emplace_back(GL_DEPTH_ATTACHMENT);
+			//drawBuffers.emplace_back(GL_DEPTH_ATTACHMENT);
 		}
 		else 
 		{
@@ -143,23 +143,22 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 
 	}
 
-	if (newRenderBuff != 0) {
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newRenderBuff);
-	}
-
 	glDrawBuffers(drawBuffers.size(), drawBuffers.data());
 
+	#ifdef _DEBUG
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE) {
 		printf("Framebuffer Error!\n");
-		if (status == GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT) {
-			printf("current Err\n");
-		}
+		//if (status == GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT) {
+		//	printf("current Err\n");
+		//}
 	}
+	#endif
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
+	setINTERNAL(ASSET::FBO, name, newFBO);
 	//TODO_D("Create an FBO! Array parameters are for the render targets, which this function should also generate!\nuse makeTexture.\nNOTE THAT THERE IS NO FUNCTION SETUP FOR MAKING RENDER BUFFER OBJECTS.");
 	return true;
 }
@@ -177,12 +176,20 @@ bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsign
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+	#ifdef _DEBUG
+	unsigned err = glGetError();
+	if (err != GL_NO_ERROR) {
+		printf("texture error");
+	}
+	#endif
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return setINTERNAL(ASSET::TEXTURE, name, newTex);
 
+
 	//TODO_D("Allocate a texture using the given space/dimensions. Should work if 'pixels' is null, so that you can use this same function with makeFBO\n note that Dept will use a GL value.");
-	return false;
+	return true;
 }
 
 bool nsfw::Assets::loadTexture(const char * name, const char * path)
