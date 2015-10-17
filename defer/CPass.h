@@ -6,13 +6,13 @@
 
 class CPass : public nsfw::RenderPass
 {
-	nsfw::Asset<nsfw::ASSET::TEXTURE> albedo, position, normal, depth, light;
+	nsfw::Asset<nsfw::ASSET::TEXTURE> albedo, position, normal, light;
 
 public:
 											
 	CPass(const char *shaderName, const char *fboName) 
 						  : RenderPass(shaderName, fboName), albedo("GPassAlbedo"), position("GPassPosition"), // NAMES ARE FROM ASSET LIBRARY!
-											    normal("GPassNormal"),depth("GPassDepth"), light("LPassColor")
+											    normal("GPassNormal"), light("LPassColor")
 												 {}
 
 
@@ -32,12 +32,12 @@ public:
 
 	void draw()
 	{
+
 		// Set uniforms for textures we're going to composite-> NAMES ARE FROM SHADER!
 		setUniform("Albedo",	nsfw::UNIFORM::TEX2, albedo,   0);
 		setUniform("Position",	nsfw::UNIFORM::TEX2, position, 1);
 		setUniform("Normal",	nsfw::UNIFORM::TEX2, normal,   2);
-		setUniform("Depth",		nsfw::UNIFORM::TEX2, depth,    3);
-		setUniform("Light",		nsfw::UNIFORM::TEX2, light,    4);
+		setUniform("Light",		nsfw::UNIFORM::TEX2, light,    3);
 
 		setUniform("TexelScalar", nsfw::UNIFORM::MAT4, glm::value_ptr(nsfw::Window::instance().getTexelAdjustmentMatrix()));
 

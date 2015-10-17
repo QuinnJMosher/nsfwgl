@@ -36,8 +36,10 @@ bool nsfw::RenderPass::setUniform(const char *name, nsfw::UNIFORM::TYPE type, co
 		glUniform1i(*shader, *castInt);
 		//TODO_D("Setup integer uniform!");	  
 		break;
-	case nsfw::UNIFORM::TEX2: 
-		glUniform1i(*shader, *castInt);
+	case nsfw::UNIFORM::TEX2:
+		glActiveTexture(GL_TEXTURE0 + count);
+		glBindTexture(GL_TEXTURE_2D, *castInt);
+		glUniform1i(*shader, count);
 		//TODO_D("Setup texture2D uniform!"); 
 		break;
 	default:

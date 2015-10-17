@@ -22,6 +22,7 @@ void GPass::post() {
 
 void GPass::draw(const Camera &c, const Geometry &g)
 {
+
 	setUniform("Projection", nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.getProjection()));
 	setUniform("View", nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.getView()));
 	setUniform("Model", nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(g.transform));

@@ -26,5 +26,5 @@ void main() {
 					normalize(vBiTangent)
 					normalize(vNormal));
 	vec3 N = texture(Normal, vUV);
-	gpassNormal = normalize(TBN * N);
+	gpassNormal = normalize(TBN * N) * SpecularPower;
 }

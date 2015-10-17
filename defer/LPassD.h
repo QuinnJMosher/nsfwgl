@@ -8,8 +8,11 @@
 
 class LPassD : public nsfw::RenderPass
 {
+	nsfw::Asset<nsfw::ASSET::TEXTURE> position, normal;
+
 public:
-	LPassD(const char *shaderName, const char *fboName) : RenderPass(shaderName, fboName) {}
+	LPassD(const char *shaderName, const char *fboName) : RenderPass(shaderName, fboName),
+														position("GPassPosition"), normal("GPassNormal") {}
 
 	void prep() {
 		glEnable(GL_BLEND);
@@ -34,6 +37,10 @@ public:
 	{
 		setUniform("Projection", nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.getProjection()));
 		setUniform("View",       nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.getView()));
+		setUniform("Model",		 nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.transform));
+
+		setUniform("PositionMap", nsfw::UNIFORM::TYPE::TEX2, position, 0);
+		setUniform("NormalMap",   nsfw::UNIFORM::TYPE::TEX2, normal,   1);
 
 		setUniform("LightDirection", nsfw::UNIFORM::TYPE::FLO3, glm::value_ptr(l.direction));
 		setUniform("LightColor",     nsfw::UNIFORM::TYPE::FLO3, glm::value_ptr(l.color));
