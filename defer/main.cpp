@@ -44,10 +44,10 @@ void DeferredApplication::onInit()
 	a.makeFBO("LightPass", w.getWidth(), w.getHeight(), 1, lpassTextureNames, lpassDepths); 
 
 	// Load Shaders
-	a.loadShader("GeometryPassPhong", "/path/to/gpass/Phong/vertex", "/path/to/gpass/Phong/fragment");
-	a.loadShader("LightPassDirectional", "/path/to/lpass/Directional/vertex", "/path/to/lpass/Directional/fragment");
-	a.loadShader("LightPassPoint", "/path/to/lpass/Point/vertex", "/path/to/lpass/Point/fragment");
-	a.loadShader("CompPass", "/path/to/cpass/vertex", "/path/to/cpass/fragment");
+	a.loadShader("GeometryPassPhong", "./shaders/geoV.glsl", "./shaders/geoF.glsl");
+	a.loadShader("LightPassDirectional", "./shaders/lightV.glsl", "./shaders/lightF.glsl");
+	//a.loadShader("LightPassPoint", "/path/to/lpass/Point/vertex", "/path/to/lpass/Point/fragment");
+	a.loadShader("CompPass", "./shaders/compV.glsl", "./shaders/compF.glsl");
 
 	// Load any other textures and geometry we want to use
 	a.loadFBX("Soulspear", "/path/to/souuuulspppeeeeaaar");
