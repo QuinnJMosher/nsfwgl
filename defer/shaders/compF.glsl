@@ -1,11 +1,15 @@
 #version 410
 
-layout (location = 0) in vec4 Position;
-layout (location = 3) in vec2 TexCoord;
+in vec2 vUV;
 
-out vec2 vUV;
+out vec4 fragColor;
+
+uniform sampler2D Albedo;
+uniform sampler2D Light;
 
 void main() {
-	vUV = TexCoord;
-	gl_position = Position;
+	vec3 light = texture(lightTexture, vUV).rgb;
+	vec3 albedo = texture(albedoTexture, vUV).rgb;
+	
+	FragColor = vec4(albedo * light, 1);
 }

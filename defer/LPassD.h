@@ -38,6 +38,7 @@ public:
 		setUniform("Projection", nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.getProjection()));
 		setUniform("View",       nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.getView()));
 		setUniform("Model",		 nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.transform));
+		setUniform("CameraPos",  nsfw::UNIFORM::TYPE::FLO3, glm::value_ptr(c.transform[3]));
 
 		setUniform("PositionMap", nsfw::UNIFORM::TYPE::TEX2, position, 0);
 		setUniform("NormalMap",   nsfw::UNIFORM::TYPE::TEX2, normal,   1);
