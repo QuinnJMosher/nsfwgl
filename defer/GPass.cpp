@@ -34,7 +34,7 @@ void GPass::draw(const Camera &c, const Geometry &g)
 	setUniform("Normal",   nsfw::UNIFORM::TEX2, &texHandle, 1);
 	texHandle = *g.specular;
 	setUniform("Specular", nsfw::UNIFORM::TEX2, &texHandle, 2);
-
+	
 	setUniform("SpecularPower", nsfw::UNIFORM::FLO1, (void*)&g.specPower);
 
 	unsigned cubeVAO = nsfw::Assets::instance().get<nsfw::ASSET::VAO>("Cube");

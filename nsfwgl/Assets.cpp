@@ -59,7 +59,7 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	GL_HANDLE newVAO;
 	GL_HANDLE newIBO;
 	GL_HANDLE newVBO;
-	GL_HANDLE newSize = 0;
+	GL_HANDLE newSize = vsize;
 
 	glGenVertexArrays(1, &newVAO);
 	glGenBuffers(1, &newVBO);
@@ -74,13 +74,13 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	glEnableVertexAttribArray(2);
 	glEnableVertexAttribArray(3);
 
-	glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (vsize * sizeof(Vertex)), verts, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (tsize * sizeof(unsigned)), tris, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4)));
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4) * 2));
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec2) + (sizeof(glm::vec4) * 2)));
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4) * 2));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4) * 3));
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -106,47 +106,33 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	GL_HANDLE newRenderBuff = 0;
 	GL_HANDLE* newTexts = new GL_HANDLE[nTextures];
 
-	for (unsigned i = 0; i < nTextures; i++) {
-		if (depths[i] == GL_DEPTH_COMPONENT) {
-			ASSET_LOG(GL_HANDLE_TYPE::RBO);
-			glGenRenderbuffers(1, &newRenderBuff);
-			newTexts[i] = newRenderBuff;
-			setINTERNAL(ASSET::RBO, names[i], newRenderBuff);
-		}
-		else 
-		{
-			if (makeTexture(names[i], w, h, depths[i])) {
-				newTexts[i] = instance().get<ASSET::TEXTURE>(names[i]);
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
-
 	glGenFramebuffers(1, &newFBO);
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, newFBO);
 
-	std::vector<GLenum>drawBuffers = std::vector<GLenum>();
-
+	int nCol = 0;
 	for (unsigned i = 0; i < nTextures; i++) {
+		makeTexture(names[i], w, h, depths[i]);
+
+		unsigned attachment = 0;
 		if (depths[i] == GL_DEPTH_COMPONENT) {
-			glBindRenderbuffer(GL_RENDERBUFFER, newTexts[i]);
-			glRenderbufferStorage(GL_FRAMEBUFFER, GL_DEPTH_COMPONENT24, w, h);
-			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newTexts[i]);
-			//drawBuffers.emplace_back(GL_DEPTH_ATTACHMENT);
+			attachment = GL_DEPTH_ATTACHMENT;
 		}
-		else 
-		{
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, newTexts[i], 0);
-			drawBuffers.emplace_back(GL_COLOR_ATTACHMENT0 + i);
+		else {
+			attachment = GL_COLOR_ATTACHMENT0 + nCol++;
 		}
 
+		glFramebufferTexture(GL_FRAMEBUFFER, 
+			GL_COLOR_ATTACHMENT0 + i, 
+			get<ASSET::TEXTURE>(names[i]), 0);
 	}
 
-	glDrawBuffers(drawBuffers.size(), drawBuffers.data());
+
+	unsigned* colorAttach = new unsigned[nCol];
+	for (unsigned i = 0; i < nCol; i++) {
+		colorAttach[i] = GL_COLOR_ATTACHMENT0 + i;
+	}
+	glDrawBuffers(nCol, colorAttach);
 
 	#ifdef _DEBUG
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -159,7 +145,6 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	#endif
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	setINTERNAL(ASSET::FBO, name, newFBO);
 	//TODO_D("Create an FBO! Array parameters are for the render targets, which this function should also generate!\nuse makeTexture.\nNOTE THAT THERE IS NO FUNCTION SETUP FOR MAKING RENDER BUFFER OBJECTS.");
@@ -178,6 +163,9 @@ bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsign
 	glTexImage2D(GL_TEXTURE_2D, 0, depth, w, h, 0, depth, GL_UNSIGNED_BYTE, pixels);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	#ifdef _DEBUG
 	unsigned err = glGetError();

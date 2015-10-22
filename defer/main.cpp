@@ -44,8 +44,8 @@ void DeferredApplication::onInit()
 	a.makeFBO("LightPass", w.getWidth(), w.getHeight(), 1, lpassTextureNames, lpassDepths); 
 
 	// Load Shaders
-	//a.loadShader("GeometryPassPhong", "./shaders/geoV.glsl", "./shaders/geoF.glsl");
-	a.loadShader("GeometryPassPhong", "./shaders/testV.glsl", "./shaders/textF.glsl");
+	a.loadShader("GeometryPassPhong", "./shaders/geoV.glsl", "./shaders/geoF.glsl");
+	//a.loadShader("GeometryPassPhong", "./shaders/testV.glsl", "./shaders/textF.glsl");
 	a.loadShader("LightPassDirectional", "./shaders/lightV.glsl", "./shaders/lightF.glsl");
 	//a.loadShader("LightPassPoint", "/path/to/lpass/Point/vertex", "/path/to/lpass/Point/fragment");
 	a.loadShader("CompPass", "./shaders/compV.glsl", "./shaders/compF.glsl");
