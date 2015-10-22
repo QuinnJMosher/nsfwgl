@@ -8,8 +8,8 @@ uniform sampler2D Albedo;
 uniform sampler2D Light;
 
 void main() {
-	vec3 light = texture(lightTexture, vUV).rgb;
-	vec3 albedo = texture(albedoTexture, vUV).rgb;
+	vec3 lt = texture(Light, vUV).rgb;
+	vec3 abd = texture(Albedo, vUV).rgb;
 	
-	FragColor = vec4(albedo * light, 1);
+	fragColor = vec4(abd * lt, 1);
 }

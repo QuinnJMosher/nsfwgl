@@ -7,5 +7,5 @@ out vec2 vUV;
 
 void main() {
 	vUV = TexCoord;
-	gl_position = Position;
+	gl_Position = Position;
 }

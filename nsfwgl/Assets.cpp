@@ -392,7 +392,7 @@ bool nsfw::Assets::loadOBJ(const char * name, const char * path)
 
 void nsfw::Assets::init()
 {
-	TODO_D("Load up some default assets here if you want.");
+	//TODO_D("Load up some default assets here if you want.");
 	
 	setINTERNAL(FBO,"Screen",0);
 	
@@ -407,7 +407,7 @@ void nsfw::Assets::init()
 
 void nsfw::Assets::term()
 {
-	TODO();
+	//TODO();
 	for each(std::pair<AssetKey,unsigned> k in handles)
 	{
 		switch (k.first.first)

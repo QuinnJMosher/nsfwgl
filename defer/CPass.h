@@ -34,10 +34,14 @@ public:
 	{
 
 		// Set uniforms for textures we're going to composite-> NAMES ARE FROM SHADER!
-		setUniform("Albedo",	nsfw::UNIFORM::TEX2, albedo,   0);
-		setUniform("Position",	nsfw::UNIFORM::TEX2, position, 1);
-		setUniform("Normal",	nsfw::UNIFORM::TEX2, normal,   2);
-		setUniform("Light",		nsfw::UNIFORM::TEX2, light,    3);
+		unsigned texHandle = *albedo;
+		setUniform("Albedo",	nsfw::UNIFORM::TEX2, &texHandle, 0);
+		texHandle = *position;
+		setUniform("Position",	nsfw::UNIFORM::TEX2, &texHandle, 1);
+		texHandle = *normal;
+		setUniform("Normal",	nsfw::UNIFORM::TEX2, &texHandle, 2);
+		texHandle = *light;
+		setUniform("Light",		nsfw::UNIFORM::TEX2, &texHandle, 3);
 
 		setUniform("TexelScalar", nsfw::UNIFORM::MAT4, glm::value_ptr(nsfw::Window::instance().getTexelAdjustmentMatrix()));
 

@@ -18,13 +18,13 @@ layout(location = 2) out vec3 gpassNormal;
 
 void main() {
 	
-	gpassAlbedo = Texture(Diffuse, vUV);
+	gpassAlbedo = texture(Diffuse, vUV).xyz;
 	
 	gpassPosition = vPosition.xyz;
 	
 	mat3 TBN = mat3(normalize(vTangent),
-					normalize(vBiTangent)
+					normalize(vBiTangent),
 					normalize(vNormal));
-	vec3 N = texture(Normal, vUV);
+	vec3 N = texture(Normal, vUV).xyz;
 	gpassNormal = normalize(TBN * N) * SpecularPower;
 }

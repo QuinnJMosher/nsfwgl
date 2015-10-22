@@ -44,13 +44,14 @@ void DeferredApplication::onInit()
 	a.makeFBO("LightPass", w.getWidth(), w.getHeight(), 1, lpassTextureNames, lpassDepths); 
 
 	// Load Shaders
-	a.loadShader("GeometryPassPhong", "./shaders/geoV.glsl", "./shaders/geoF.glsl");
+	//a.loadShader("GeometryPassPhong", "./shaders/geoV.glsl", "./shaders/geoF.glsl");
+	a.loadShader("GeometryPassPhong", "./shaders/testV.glsl", "./shaders/textF.glsl");
 	a.loadShader("LightPassDirectional", "./shaders/lightV.glsl", "./shaders/lightF.glsl");
 	//a.loadShader("LightPassPoint", "/path/to/lpass/Point/vertex", "/path/to/lpass/Point/fragment");
 	a.loadShader("CompPass", "./shaders/compV.glsl", "./shaders/compF.glsl");
 
 	// Load any other textures and geometry we want to use
-	a.loadFBX("Soulspear", "/path/to/souuuulspppeeeeaaar");
+	a.loadFBX("Ss", "./assets/soulspear/soulspear.fbx");
 }
 
 void DeferredApplication::onPlay()
@@ -65,11 +66,11 @@ void DeferredApplication::onPlay()
 	m_light->color      = glm::vec3(1, 1, 1);
 	m_light->direction = glm::normalize(glm::vec3(1, 1, 0));
 
-	m_soulspear->mesh	   = "Soulspear";
-	m_soulspear->tris	   = "Soulspear";
-	m_soulspear->diffuse   = "SoulspearDiffuse";	// loadFBX will need to name every handle it creates,
-	m_soulspear->normal    = "SoulspearNormal";		// These handle names may not be what your loadFBX sets 
-	m_soulspear->specular  = "SoulspearSpecular";	// them as! (Assets will report what the key names are though)
+	m_soulspear->mesh	   = "Ss_SoulSpear_Low:SoulSpear_Low1";
+	m_soulspear->tris	   = "Ss_SoulSpear_Low:SoulSpear_Low1";
+	m_soulspear->diffuse   = "Ss_soulspear_diffuse.tga";	// loadFBX will need to name every handle it creates,
+	m_soulspear->normal    = "Ss_soulspear_normal.tga";		// These handle names may not be what your loadFBX sets 
+	m_soulspear->specular  = "Ss_soulspear_specular.tga";	// them as! (Assets will report what the key names are though)
 	m_soulspear->specPower = 40.0f;
 	m_soulspear->transform = mat4(1);
 
@@ -96,9 +97,9 @@ void DeferredApplication::onStep()
 	m_directionalLightPass->draw(*m_camera, *m_light);
 	m_directionalLightPass->post();
 
-	m_compositePass->prep();
-	m_compositePass->draw();
-	m_compositePass->post();
+	//m_compositePass->prep();
+	//m_compositePass->draw();
+	//m_compositePass->post();
 }
 
 void DeferredApplication::onTerm()

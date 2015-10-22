@@ -5,8 +5,9 @@
 
 void GPass::prep() {
 	glEnable(GL_DEPTH_TEST);
-	glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
-	glClearColor(0, 0, 0, 0);
+	//glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClearColor(0, 1, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(*shader);
@@ -27,14 +28,22 @@ void GPass::draw(const Camera &c, const Geometry &g)
 	setUniform("View", nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(c.getView()));
 	setUniform("Model", nsfw::UNIFORM::TYPE::MAT4, glm::value_ptr(g.transform));
 
-	setUniform("Diffuse", nsfw::UNIFORM::TEX2, g.diffuse, 0);
-	setUniform("Normal", nsfw::UNIFORM::TEX2, g.normal, 1);
-	setUniform("Specular", nsfw::UNIFORM::TEX2, g.specular, 2);
+	unsigned texHandle = *g.diffuse;
+	setUniform("Diffuse",  nsfw::UNIFORM::TEX2, &texHandle, 0);
+	texHandle = *g.normal;
+	setUniform("Normal",   nsfw::UNIFORM::TEX2, &texHandle, 1);
+	texHandle = *g.specular;
+	setUniform("Specular", nsfw::UNIFORM::TEX2, &texHandle, 2);
 
 	setUniform("SpecularPower", nsfw::UNIFORM::FLO1, (void*)&g.specPower);
 
-	glBindVertexArray(*g.mesh);
-	glDrawElements(GL_TRIANGLES, *g.tris, GL_UNSIGNED_INT, 0);
+	unsigned cubeVAO = nsfw::Assets::instance().get<nsfw::ASSET::VAO>("Cube");
+	unsigned cubeCT = nsfw::Assets::instance().get<nsfw::ASSET::VERTEX_COUNT>("Cube");
+	glBindVertexArray(cubeVAO);
+	glDrawElements(GL_TRIANGLES, cubeCT, GL_UNSIGNED_INT, 0);
+
+	/*glBindVertexArray(*g.mesh);
+	glDrawElements(GL_TRIANGLES, *g.tris, GL_UNSIGNED_INT, 0);*/
 	glBindVertexArray(0);
 	//TODO_D("bindVAO and Draw Elements!");
 }

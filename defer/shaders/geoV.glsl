@@ -17,11 +17,11 @@ uniform mat4 Projection;
 
 void main() {
 	vPosition = View * Position;
-	vNormal = normalixe(View * Normal).xyz;
-	vTangent = tangent.xyz
+	vNormal = normalize(View * Normal).xyz;
+	vTangent = tangent.xyz;
 	vBiTangent = cross(vNormal, vTangent);
 	vUV = TexCoord;
 	
-	//gl_Position = (Projection * View * Model) * position;
-	gl_Position = (Projection * View) * position;
+	//gl_Position = (Projection * View * Model) * Position;
+	gl_Position = (Projection * View) * Position;
 }
