@@ -333,47 +333,67 @@ bool nsfw::Assets::loadOBJ(const char * name, const char * path)
 	std::string err = tinyobj::LoadObj(shapes, mats, path);
 	printf(err.c_str());
 
+	std::vector<glm::vec4>positions;
+	std::vector<glm::vec4>normals;
+	std::vector<glm::vec2>uvs;
+
 	for (unsigned meshIndex = 0; meshIndex < shapes.size(); meshIndex++) {
 		tinyobj::mesh_t &curMesh = shapes[meshIndex].mesh;
 
-		bool minusOne = false;
 		for (unsigned j = 0; j < curMesh.positions.size() / 3; j++) {
-			Vertex newVert;
-
-			newVert.position.x = curMesh.positions[3 * j + 0];
-			newVert.position.y = curMesh.positions[3 * j + 1];
-			newVert.position.z = curMesh.positions[3 * j + 2];
-			newVert.position.w = 1;
-
-			newVert.normal.x = curMesh.normals[3 * j + 0];
-			newVert.normal.y = curMesh.normals[3 * j + 1];
-			newVert.normal.z = curMesh.normals[3 * j + 2];
-			newVert.normal.w = 1;
-
-			newVert.tangent = vec4(0);
-
-			if (minusOne) {
-				newVert.texCoord.x = curMesh.texcoords[3 * j - 1];
-				newVert.texCoord.y = curMesh.texcoords[3 * j + 0];
-			}
-			else 
-			{
-				newVert.texCoord.x = curMesh.texcoords[3 * j + 0];
-				newVert.texCoord.y = curMesh.texcoords[3 * j + 1];
-			}
-
-			minusOne = !minusOne;
-
-			verticies.emplace_back(newVert);
+			vec4 newPos;
+			newPos.x = curMesh.positions[3 * j + 0];
+			newPos.y = curMesh.positions[3 * j + 1];
+			newPos.z = curMesh.positions[3 * j + 2];
+			newPos.w = 1;
+			positions.emplace_back(newPos);
 		}
+
+		for (unsigned j = 0; j < curMesh.normals.size() / 3; j++) {
+			vec4 newNorm;
+			newNorm.x = curMesh.normals[3 * j + 0];
+			newNorm.y = curMesh.normals[3 * j + 1];
+			newNorm.z = curMesh.normals[3 * j + 2];
+			newNorm.w = 1;
+			normals.emplace_back(newNorm);
+		}
+
+		for (unsigned j = 0; j < curMesh.texcoords.size() / 2; j++) {
+			vec2 newUV;
+			newUV.x = curMesh.texcoords[2 * j + 0];
+			newUV.y = curMesh.texcoords[2 * j + 1];
+			uvs.emplace_back(newUV);
+		}
+
 		for (unsigned k = 0; k < curMesh.indices.size(); k++) {
 			indicies.emplace_back(curMesh.indices.at(k));
 		}
-		//indicies.emplace_back(curMesh.indices.data());
+	}
+
+	for (unsigned i = 0; i < positions.size(); i++) {
+		Vertex newVert;
+		newVert.position = positions[i];
+
+		if (i < normals.size()) {
+			newVert.normal = normals[i];
+		}
+		else {
+			newVert.normal = vec4(0);
+		}
+
+		if (i < uvs.size()) {
+			newVert.texCoord = uvs[i];
+		}
+		else {
+			newVert.texCoord = vec2(0);
+		}
+
+		newVert.tangent = vec4(0);
+
+		verticies.emplace_back(newVert);
 	}
 
 	return makeVAO(name, verticies.data(), verticies.size(), indicies.data(), indicies.size());
-	return false;
 
 	//TODO_D("OBJ file-loading support needed.\nThis function should call makeVAO and loadTexture (if necessary), MAKE SURE TO TAKE THE OBJ DATA AND PROPERLY LINE IT UP WITH YOUR VERTEX ATTRIBUTES (or interleave the data into your vertex struct).\n");
 }

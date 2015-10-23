@@ -12,11 +12,15 @@ void TestApp::onStep() {
 };
 
 void TestApp::onPlay() {
+
+	auto& ass = nsfw::Assets::instance();
+
+	ass.loadOBJ("obj", "./assets/cube.obj");
 	cam.lookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	go.trasform = glm::mat4(1);
 	go.diffuse = "Cyan";
-	go.mesh = "Cube";
-	go.tris = "Cube";
+	go.mesh = "obj";
+	go.tris = "obj";
 
 	fp.shader = "basic";
 	//fp.fbo = "Screen";
