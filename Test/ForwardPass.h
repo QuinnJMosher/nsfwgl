@@ -14,14 +14,14 @@ public:
 	{
 		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.f, 0.f, 1.f, 1.f);
-		//glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		glUseProgram(*shader);
 	}
 
 	void post() {
-		//glDisable(GL_DEPTH_TEST);
+		glDisable(GL_DEPTH_TEST);
 		glUseProgram(0);
 	}
 

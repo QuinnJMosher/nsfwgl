@@ -164,8 +164,8 @@ bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsign
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	/*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
 
 	#ifdef _DEBUG
 	unsigned err = glGetError();
@@ -295,25 +295,24 @@ bool nsfw::Assets::loadFBX(const char * name, const char * path)
 
 		for (unsigned j = 0; j < modelData->m_vertices.size(); j++) {
 			Vertex newVert;
-			newVert.position = modelData->m_vertices[i].position;
-			newVert.normal = modelData->m_vertices[i].normal;
-			newVert.tangent = modelData->m_vertices[i].tangent;
-			newVert.texCoord = modelData->m_vertices[i].texCoord1;
+			newVert.position = modelData->m_vertices[j].position;
+			newVert.normal = modelData->m_vertices[j].normal;
+			newVert.tangent = modelData->m_vertices[j].tangent;
+			newVert.texCoord = modelData->m_vertices[j].texCoord1;
 
-			vertices[i] = newVert;
+			vertices[j] = newVert;
 		}
 
 		std::string newName = namePrefix + modelData->m_name;
 		makeVAO(newName.c_str(), vertices, modelData->m_vertices.size(), modelData->m_indices.data(), modelData->m_indices.size());
 	}
 
-	fbxFile.initialiseOpenGLTextures();
 	for (unsigned i = 0; i < fbxFile.getTextureCount(); i++) {
-		FBXTexture* tex = fbxFile.getTextureByIndex(i);
+		FBXTexture* curTex = fbxFile.getTextureByIndex(i);
 
-		std::string newName = namePrefix + tex->name;
+		std::string newName = namePrefix + curTex->name;
 
-		setINTERNAL(ASSET::TEXTURE, newName.c_str(), tex->handle);
+		loadTexture(newName.c_str(), curTex->path.c_str());
 	}
 
 	fbxFile.unload();
