@@ -130,7 +130,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ForwardPass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TestApp.cpp" />
   </ItemGroup>

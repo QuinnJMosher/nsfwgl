@@ -30,7 +30,8 @@ public:
 		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
 
 		setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
-		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &(go.diffuse));
+		unsigned texVal = *go.diffuse;
+		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &texVal);
 
 		glBindVertexArray(*go.mesh);
 		glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);

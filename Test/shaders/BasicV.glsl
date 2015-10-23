@@ -11,6 +11,6 @@ uniform mat4 Model;
 
 void main() {
 	vTexCoord = TexCoord;
-	//gl_Position = Projection * View * Model * Position;
-	gl_Position = Position;
+	gl_Position = Projection * View * Model * Position;
+	//gl_Position = Position;
 }
