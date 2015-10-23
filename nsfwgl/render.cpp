@@ -17,22 +17,22 @@ bool nsfw::RenderPass::setUniform(const char *name, nsfw::UNIFORM::TYPE type, co
 	switch (type)
 	{
 	case nsfw::UNIFORM::FLO1: 
-		glUniform1f(loc, *castFloat);
+		glUniform1fv(loc, count, castFloat);
 		return true;
 		/*TODO_D("Setup float uniform!");*/
 		break;
 	case nsfw::UNIFORM::FLO3:
-		glUniform3fv(loc, 1, castFloat);
+		glUniform3fv(loc, count, castFloat);
 		return true;
 		//TODO_D("Setup vec3 uniform!");
 		break;
 	case nsfw::UNIFORM::FLO4:
-		glUniform4fv(loc, 1, castFloat);
+		glUniform4fv(loc, count, castFloat);
 		return true;
 		//TODO_D("Setup vec4 uniform!");      
 		break;
 	case nsfw::UNIFORM::MAT4:
-		glUniformMatrix4fv(loc, 1, GL_FALSE, castFloat);
+		glUniformMatrix4fv(loc, count, normalize, castFloat);
 		return true;
 		//TODO_D("Setup mat4 uniform!");	  
 		break;

@@ -89,7 +89,7 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	if (setINTERNAL(ASSET::VAO, name, newVAO)) {
 		if (setINTERNAL(ASSET::VBO, name, newVBO)) {
 			if (setINTERNAL(ASSET::IBO, name, newIBO)) {
-				return setINTERNAL(ASSET::VERTEX_COUNT, name, newSize);
+				return setINTERNAL(ASSET::VERTEX_COUNT, name, vsize);
 			}
 		}
 	}
@@ -151,7 +151,7 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	return true;
 }
 
-bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsigned depth, const char *pixels)
+bool nsfw::Assets::makeTexture(const char * name, unsigned w, unsigned h, unsigned depth, const unsigned char *pixels)
 {
 	ASSET_LOG(GL_HANDLE_TYPE::TEXTURE);
 	GL_HANDLE newTex;
@@ -223,7 +223,7 @@ bool nsfw::Assets::loadTexture(const char * name, const char * path)
 		break;
 	}
 
-	bool sucess = makeTexture(name, width, height, glFormat, (const char*)data);
+	bool sucess = makeTexture(name, width, height, glFormat, data);
 
 	stbi_image_free(data);
 
@@ -385,11 +385,9 @@ void nsfw::Assets::init()
 	setINTERNAL(FBO,"Screen",0);
 	
 	makeVAO("Cube",CubeVerts,24,CubeTris,36);
-	makeVAO("Quad",QuadVerts, 4, QuadTris,6);
-	/*
-	char w[] = { 255,255,255,255 };
-	makeTexture("White", 1, 1, GL_RGB8, w);
-	*/
+	makeVAO("Quad",QuadVerts, 6, QuadTris,6);
+	unsigned char w[] = { 0,255,255,255 };
+	makeTexture("Cyan", 1, 1, DEPTH::RGB, w);
 
 }
 
