@@ -12,7 +12,7 @@ public:
 
 	void prep()
 	{
-		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
 		glClearColor(0.f, 0.f, 1.f, 1.f);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -21,6 +21,7 @@ public:
 	}
 
 	void post() {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDisable(GL_DEPTH_TEST);
 		glUseProgram(0);
 	}
