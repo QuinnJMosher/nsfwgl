@@ -134,6 +134,13 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	}
 	glDrawBuffers(nCol, colorAttach);
 
+	//adding renderbuffer to try and stop some weird rendering issues
+	GL_HANDLE newRBO;
+	glGenRenderbuffers(1, &newRBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, newRBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, w, h);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, newFBO);
+
 	#ifdef _DEBUG
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE) {
@@ -145,7 +152,9 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 	#endif
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
+	setINTERNAL(ASSET::RBO, name, newRBO);
 	setINTERNAL(ASSET::FBO, name, newFBO);
 	//TODO_D("Create an FBO! Array parameters are for the render targets, which this function should also generate!\nuse makeTexture.\nNOTE THAT THERE IS NO FUNCTION SETUP FOR MAKING RENDER BUFFER OBJECTS.");
 	return true;
