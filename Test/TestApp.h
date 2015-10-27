@@ -5,12 +5,14 @@
 #include "Camera.h"
 #include "GameObject.h"
 #include "ForwardPass.h"
+#include "GeoPass.h"
 #include "CompPass.h"
 
 class TestApp : public nsfw::Application {
 	Camera cam;
 	GameObject go;
 	ForwardPass fp;
+	GeoPass gp;
 	CompPass cp;
 
 public:

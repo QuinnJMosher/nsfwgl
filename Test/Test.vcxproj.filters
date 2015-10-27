@@ -38,5 +38,8 @@
     <ClInclude Include="CompPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeoPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
