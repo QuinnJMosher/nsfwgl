@@ -4,7 +4,7 @@
 void TestApp::onStep() {
 
 	float time = nsfw::Window::instance().getTime();
-	go.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(5.f, 5.f, 5.f);
+	go.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(3.f, 3.f, 3.f);
 
 	//fp.prep();
 	//fp.draw(go, cam);
@@ -54,10 +54,10 @@ void TestApp::onPlay() {
 	unsigned geoTexDepths[] = { nsfw::DEPTH::RGB, nsfw::DEPTH::RGB, nsfw::DEPTH::RGB };
 	ass.makeFBO("geoBuff", 800, 600, 3, geoTexNames, geoTexDepths);
 	gp.fbo = "geoBuff";
-	ass.loadShader("geoShader", "", "");
+	ass.loadShader("geoShader", "./shaders/GeoV.glsl", "./shaders/GeoF.glsl");
 	gp.shader = "geoShader";
 
-	cp.diffusePassTex = "geoDiffuse";
+	cp.diffusePassTex = "geoDepth";
 	cp.shader = "composit";
 
 	cam.aspect = 800 / 600.f;//nsfw::Window::instance().getWidth() / (float)nsfw::Window::instance().getHeight();

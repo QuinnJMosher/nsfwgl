@@ -1,12 +1,17 @@
 #version 410
 
-in vec2 vTexCoord;;
-out vec4 FragColor;
+in vec4 vPosition;
+in vec4 vNormal;
+in vec2 vTexCoord;
+
+layout(location = 0) out vec3 tAlbedo;
+layout(location = 1) out vec3 tNormals;
+layout(location = 2) out vec3 tPositions;
 
 uniform sampler2D Diffuse;
 
 void main() {
-	FragColor = texture(Diffuse, vTexCoord);
-	//FragColor = vec4(vTexCoord, 0, 1);
-	//FragColor = vec4(1, 0, 0, 1);
+	tAlbedo = texture(Diffuse, vTexCoord).xyz;
+	tPositions = vPosition.xyz;
+	tNormals = vNormal.xyz;
 }
