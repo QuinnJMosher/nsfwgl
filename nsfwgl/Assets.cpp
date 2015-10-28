@@ -362,7 +362,7 @@ bool nsfw::Assets::loadOBJ(const char * name, const char * path)
 			newNorm.x = curMesh.normals[3 * j + 0];
 			newNorm.y = curMesh.normals[3 * j + 1];
 			newNorm.z = curMesh.normals[3 * j + 2];
-			newNorm.w = 1;
+			newNorm.w = 0;
 			normals.emplace_back(newNorm);
 		}
 
