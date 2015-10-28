@@ -139,6 +139,7 @@
     <ClInclude Include="ForwardPass.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeoPass.h" />
+    <ClInclude Include="lightPass.h" />
     <ClInclude Include="TestApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

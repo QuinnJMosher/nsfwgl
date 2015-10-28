@@ -4,7 +4,7 @@
 void TestApp::onStep() {
 
 	float time = nsfw::Window::instance().getTime();
-	go.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(3.f, 3.f, 3.f);
+	go.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(3.f, 3.f, 3.f) * glm::translate(0.f, -2.f, 0.f);
 
 	//fp.prep();
 	//fp.draw(go, cam);
@@ -57,7 +57,7 @@ void TestApp::onPlay() {
 	ass.loadShader("geoShader", "./shaders/GeoV.glsl", "./shaders/GeoF.glsl");
 	gp.shader = "geoShader";
 
-	cp.diffusePassTex = "geoDepth";
+	cp.diffusePassTex = "geoDiffuse";
 	cp.shader = "composit";
 
 	cam.aspect = 800 / 600.f;//nsfw::Window::instance().getWidth() / (float)nsfw::Window::instance().getHeight();
