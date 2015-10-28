@@ -1,5 +1,6 @@
 #include "TestApp.h"
 #include "Window.h"
+#include "glm/ext.hpp"
 
 void TestApp::onStep() {
 
@@ -13,6 +14,10 @@ void TestApp::onStep() {
 	gp.prep();
 	gp.draw(go, cam);
 	gp.post();
+
+	lp.prep();
+	lp.draw(dl, cam);
+	lp.post();
 
 	cp.prep();
 	cp.draw();
@@ -57,7 +62,21 @@ void TestApp::onPlay() {
 	ass.loadShader("geoShader", "./shaders/GeoV.glsl", "./shaders/GeoF.glsl");
 	gp.shader = "geoShader";
 
-	cp.diffusePassTex = "geoDiffuse";
+	//setup LightPass
+	const char* lightTexNames[] = { "lightTex" };
+	unsigned lightTexDepths[] = { nsfw::DEPTH::RGB };
+	ass.makeFBO("lightBuff", 800, 600, 1, lightTexNames, lightTexDepths);
+	lp.fbo = "lightBuff";
+	ass.loadShader("lightShader", "./shaders/lightV.glsl", "./shaders/lightF.glsl");
+	lp.shader = "lightShader";
+	lp.PositionMap = "geoNormal";
+	lp.NormalMap = "geoDepth";
+
+	//setup light
+	dl.direction = glm::normalize(glm::vec4(-1, -1, 0, 1));
+	dl.color = glm::vec4(0.5f, 0.f, 0.f, 1.f);
+
+	cp.diffusePassTex = "lightTex";
 	cp.shader = "composit";
 
 	cam.aspect = 800 / 600.f;//nsfw::Window::instance().getWidth() / (float)nsfw::Window::instance().getHeight();

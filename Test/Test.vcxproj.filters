@@ -44,5 +44,8 @@
     <ClInclude Include="lightPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DirectionLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

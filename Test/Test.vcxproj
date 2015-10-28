@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompPass.h" />
+    <ClInclude Include="DirectionLight.h" />
     <ClInclude Include="ForwardPass.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeoPass.h" />
