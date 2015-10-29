@@ -11,6 +11,7 @@ class CompPass : public nsfw::RenderPass {
 public:
 
 	nsfw::Asset<nsfw::ASSET::TEXTURE>diffusePassTex;
+	nsfw::Asset<nsfw::ASSET::TEXTURE>lightPassTex;
 
 	void prep()
 	{
@@ -30,7 +31,9 @@ public:
 
 	void draw() {
 		unsigned texVal = *diffusePassTex;
-		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &texVal);
+		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &texVal, 0);
+		texVal = *lightPassTex;
+		setUniform("Light", nsfw::UNIFORM::TEX2, &texVal, 1);
 
 		auto& ass = nsfw::Assets::instance();
 

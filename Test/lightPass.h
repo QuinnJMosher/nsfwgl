@@ -34,13 +34,13 @@ public:
 		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getProjection()));
 		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
 		
-		setUniform("lightDirection", nsfw::UNIFORM::FLO4, glm::value_ptr(lt.direction));
-		setUniform("lightDiffuse", nsfw::UNIFORM::FLO4, glm::value_ptr(lt.color));
+		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
+		setUniform("lightDiffuse", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.color));
 
 		unsigned texVal = *PositionMap;
-		setUniform("PosMap", nsfw::UNIFORM::TEX2, &texVal);
+		setUniform("PosMap", nsfw::UNIFORM::TEX2, &texVal, 0);
 		texVal = *NormalMap;
-		setUniform("NormMap", nsfw::UNIFORM::TEX2, &texVal);
+		setUniform("NormMap", nsfw::UNIFORM::TEX2, &texVal, 1);
 
 		auto& ass = nsfw::Assets::instance();
 

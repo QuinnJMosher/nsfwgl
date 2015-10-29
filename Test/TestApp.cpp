@@ -5,7 +5,7 @@
 void TestApp::onStep() {
 
 	float time = nsfw::Window::instance().getTime();
-	go.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(3.f, 3.f, 3.f) * glm::translate(0.f, -2.f, 0.f);
+	go.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(5.f, 5.f, 5.f) * glm::translate(0.f, -2.f, 0.f);
 
 	//fp.prep();
 	//fp.draw(go, cam);
@@ -69,14 +69,16 @@ void TestApp::onPlay() {
 	lp.fbo = "lightBuff";
 	ass.loadShader("lightShader", "./shaders/lightV.glsl", "./shaders/lightF.glsl");
 	lp.shader = "lightShader";
-	lp.PositionMap = "geoNormal";
-	lp.NormalMap = "geoDepth";
+	lp.PositionMap = "geoDepth";
+	lp.NormalMap = "geoNormal";
 
 	//setup light
-	dl.direction = glm::normalize(glm::vec4(-1, -1, 0, 1));
-	dl.color = glm::vec4(0.5f, 0.f, 0.f, 1.f);
+	dl.direction = glm::normalize(glm::vec3(-3, 0, 0));
+	dl.color = glm::vec3(0.7f, 0.7f, 0.7f);
 
-	cp.diffusePassTex = "lightTex";
+	//setup composite
+	cp.diffusePassTex = "geoDiffuse";
+	cp.lightPassTex = "lightTex";
 	cp.shader = "composit";
 
 	cam.aspect = 800 / 600.f;//nsfw::Window::instance().getWidth() / (float)nsfw::Window::instance().getHeight();
