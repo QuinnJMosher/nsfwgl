@@ -10,6 +10,8 @@
 class ForwardPass : public nsfw::RenderPass {
 public:
 
+	nsfw::Asset<nsfw::ASSET::TEXTURE>Tex;
+
 	void prep()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
@@ -26,15 +28,13 @@ public:
 		glUseProgram(0);
 	}
 
-	void draw(const GameObject &go, const Camera &cam) {
-		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getProjection()));
-		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
+	void draw() {
+		unsigned texVal = *Tex;
+		setUniform("Tex", nsfw::UNIFORM::TEX2, &texVal);
 
-		setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
-		unsigned texVal = *go.diffuse;
-		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &texVal);
+		auto& ass = nsfw::Assets::instance();
 
-		glBindVertexArray(*go.mesh);
-		glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(ass.get<nsfw::ASSET::VAO>("Quad"));
+		glDrawElements(GL_TRIANGLES, ass.get<nsfw::ASSET::VERTEX_COUNT>("Quad"), GL_UNSIGNED_INT, 0);
 	}
 };

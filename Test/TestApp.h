@@ -2,22 +2,34 @@
 #include "nsfw.h"
 #include "Application.h"
 
+//objects
 #include "Camera.h"
 #include "GameObject.h"
-#include "ForwardPass.h"
+//passes
 #include "GeoPass.h"
 #include "lightPass.h"
+#include "ShadowPass.h"
+
+#include "ForwardPass.h"
 #include "CompPass.h"
 
 class TestApp : public nsfw::Application {
+	
+	//objects
 	Camera cam;
 	GameObject go1;
 	GameObject go2;
 	DirectionLight dl;
-	ForwardPass fp;
+
+	//passes
 	GeoPass gp;
 	LightPass lp;
+	ShadowPass sp;
+	//final passes
+	ForwardPass fp;
 	CompPass cp;
+
+	float ScrW, ScrH;
 
 public:
 	void onStep();

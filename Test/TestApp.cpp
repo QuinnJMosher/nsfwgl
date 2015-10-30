@@ -11,6 +11,11 @@ void TestApp::onStep() {
 	//fp.draw(go, cam);
 	//fp.post();
 
+	sp.prep();
+	sp.draw(go1, dl);
+	sp.draw(go2, dl);
+	sp.post();
+
 	gp.prep();
 	gp.draw(go1, cam);
 	gp.draw(go2, cam);
@@ -27,6 +32,9 @@ void TestApp::onStep() {
 
 void TestApp::onPlay() {
 
+	ScrW = (float)nsfw::Window::instance().getWidth();
+	ScrH = (float)nsfw::Window::instance().getHeight();
+
 	auto& ass = nsfw::Assets::instance();
 
 	ass.loadShader("basic", "./shaders/BasicV.glsl", "./shaders/BasicF.glsl");
@@ -39,7 +47,7 @@ void TestApp::onPlay() {
 
 	const char* baseTexNames[] = { "fboTex1" };
 	unsigned baseTexDepths[] = { nsfw::DEPTH::RGB };
-	ass.makeFBO("testBuff", 800, 600, 1, baseTexNames, baseTexDepths);
+	ass.makeFBO("testBuff", ScrW, ScrH, 1, baseTexNames, baseTexDepths);
 
 	cam.lookAt(glm::vec3(0, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
@@ -59,7 +67,7 @@ void TestApp::onPlay() {
 	//setup GeoPass
 	const char* geoTexNames[] = { "geoDiffuse", "geoNormal", "geoDepth" };
 	unsigned geoTexDepths[] = { nsfw::DEPTH::RGB, nsfw::DEPTH::RGB, nsfw::DEPTH::RGB };
-	ass.makeFBO("geoBuff", 800, 600, 3, geoTexNames, geoTexDepths);
+	ass.makeFBO("geoBuff", ScrW, ScrH, 3, geoTexNames, geoTexDepths);
 	gp.fbo = "geoBuff";
 	ass.loadShader("geoShader", "./shaders/GeoV.glsl", "./shaders/GeoF.glsl");
 	gp.shader = "geoShader";
@@ -67,12 +75,24 @@ void TestApp::onPlay() {
 	//setup LightPass
 	const char* lightTexNames[] = { "lightTex" };
 	unsigned lightTexDepths[] = { nsfw::DEPTH::RGB };
-	ass.makeFBO("lightBuff", 800, 600, 1, lightTexNames, lightTexDepths);
+	ass.makeFBO("lightBuff", ScrW, ScrH, 1, lightTexNames, lightTexDepths);
 	lp.fbo = "lightBuff";
 	ass.loadShader("lightShader", "./shaders/lightV.glsl", "./shaders/lightF.glsl");
 	lp.shader = "lightShader";
 	lp.PositionMap = "geoDepth";
 	lp.NormalMap = "geoNormal";
+
+	//setup shadow pass
+	const char* shadowTexNames[] = { "shadowTex" };
+	unsigned shadowTexDepths[] = { nsfw::DEPTH::DEPTH };
+	ass.makeFBO("shadowBuff", 512, 512, 1, shadowTexNames, shadowTexDepths);
+	sp.fbo = "shadowBuff";
+	ass.loadShader("shadowShader", "./shaders/ShadowV.glsl", "./shaders/ShadowF.glsl");
+	sp.shader = "shadowShader";
+	sp.ScrWidth = ScrW;
+	sp.ScrHeight = ScrH;
+	sp.BufWidth = 512;
+	sp.BufHeight = 512;
 
 	//setup light
 	dl.direction = glm::normalize(glm::vec3(-3, 0, 0));
@@ -83,7 +103,7 @@ void TestApp::onPlay() {
 	cp.lightPassTex = "lightTex";
 	cp.shader = "composit";
 
-	cam.aspect = 800 / 600.f;//nsfw::Window::instance().getWidth() / (float)nsfw::Window::instance().getHeight();
+	cam.aspect = ScrW / ScrH;
 }
 
 void TestApp::onInit() {
