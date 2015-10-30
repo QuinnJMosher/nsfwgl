@@ -40,5 +40,6 @@ namespace nsfw
 		unsigned  getWidth()                 const;
 		unsigned  getHeight()                const;
 		glm::mat4 getTexelAdjustmentMatrix() const;
+		void	  getMouse(double* x, double* y);
 	};
 }

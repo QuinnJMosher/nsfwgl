@@ -5,14 +5,15 @@
 void TestApp::onStep() {
 
 	float time = nsfw::Window::instance().getTime();
-	go.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(5.f, 5.f, 5.f) * glm::translate(0.f, -2.f, 0.f);
+	go1.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(2.f, 2.f, 2.f);
 
 	//fp.prep();
 	//fp.draw(go, cam);
 	//fp.post();
 
 	gp.prep();
-	gp.draw(go, cam);
+	gp.draw(go1, cam);
+	gp.draw(go2, cam);
 	gp.post();
 
 	lp.prep();
@@ -32,27 +33,28 @@ void TestApp::onPlay() {
 	ass.loadShader("composit", "./shaders/CompV.glsl", "./shaders/CompF.glsl");
 	//load GeoShader
 
-	//ass.loadOBJ("obj", "./assets/cube.obj");
-	ass.loadTexture("tex", "./assets/crate.png");
-	ass.loadFBX("fbx", "./assets/soulspear/soulspear.fbx");
+	//ass.loadTexture("tex", "./assets/crate.png");
+	ass.loadFBX("spear", "./assets/soulspear/soulspear.fbx");
+	ass.loadFBX("bunny", "./assets/bunny/Bunny.fbx");
 
 	const char* baseTexNames[] = { "fboTex1" };
 	unsigned baseTexDepths[] = { nsfw::DEPTH::RGB };
 	ass.makeFBO("testBuff", 800, 600, 1, baseTexNames, baseTexDepths);
 
-	cam.lookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	cam.lookAt(glm::vec3(0, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
-	go.trasform = glm::mat4(1);
-	go.diffuse = "fbx_soulspear_diffuse.tga";
-	//go.diffuse = "tex";
-	go.mesh = "fbx_SoulSpear_Low:SoulSpear_Low1";
-	go.tris = "fbx_SoulSpear_Low:SoulSpear_Low1";
-	//go.mesh = "obj";
-	//go.tris = "obj";
+	go1.trasform = glm::mat4(1);
+	go1.diffuse = "spear_soulspear_diffuse.tga";
+	go1.mesh = "spear_SoulSpear_Low:SoulSpear_Low1";
+	go1.tris = "spear_SoulSpear_Low:SoulSpear_Low1";
+
+	go2.trasform = glm::translate(glm::vec3(-10.0f, 0.0f, 0.0f)) * glm::scale(glm::vec3(0.7f, 0.7f, 0.7f));
+	go2.diffuse = "Cyan";
+	go2.mesh = "bunny_Mesh";
+	go2.tris = "bunny_Mesh";
 
 	fp.shader = "basic";
 	fp.fbo = "testBuff";
-	//fp.fbo = "Screen";
 
 	//setup GeoPass
 	const char* geoTexNames[] = { "geoDiffuse", "geoNormal", "geoDepth" };

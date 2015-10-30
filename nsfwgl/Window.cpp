@@ -100,3 +100,7 @@ glm::mat4 nsfw::Window::getTexelAdjustmentMatrix() const
 	// scale up to the appropriate size, then shift it to line up w/center of texels
 	return glm::translate(halfTexel) * glm::scale(glm::vec3(1, 1, 1) - texelSize);	
 }
+
+void nsfw::Window::getMouse(double* x, double* y) {
+	glfwGetCursorPos(window, x, y);
+}

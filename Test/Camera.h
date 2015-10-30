@@ -3,15 +3,16 @@
 #include "glm\glm.hpp"
 #include "glm\ext.hpp"
 
-struct Camera
+class Camera
 {
+	public:
 	glm::mat4 transform;
 	float near, far, aspect, fov;
 
 	Camera() : near(1), far(100), aspect(nsfw::Window::instance().getWidth() / (float)nsfw::Window::instance().getHeight()), fov(90) {}
 
-	void update() {}
-	void lookAt(glm::vec3 pos, glm::vec3 target, glm::vec3 up) { transform = glm::inverse(glm::lookAt(pos, target, up)); }
+	virtual void update(const float time) {}
+	virtual void lookAt(glm::vec3 in_pos, glm::vec3 in_target, glm::vec3 in_up) { transform = glm::inverse(glm::lookAt(in_pos, in_target, in_up)); }
 	glm::mat4 getView()		  const { return glm::inverse(transform); }
 	glm::mat4 getProjection() const { return glm::perspective(fov, aspect, near, far); }
 };

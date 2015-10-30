@@ -115,7 +115,7 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 		makeTexture(names[i], w, h, depths[i]);
 
 		unsigned attachment = 0;
-		if (depths[i] == GL_DEPTH_COMPONENT) {
+		if (depths[i] == DEPTH::DEPTH) { //GL_DEPTH_COMPONENT
 			attachment = GL_DEPTH_ATTACHMENT;
 		}
 		else {
@@ -123,7 +123,7 @@ bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned n
 		}
 
 		glFramebufferTexture(GL_FRAMEBUFFER, 
-			GL_COLOR_ATTACHMENT0 + i, 
+			attachment,
 			get<ASSET::TEXTURE>(names[i]), 0);
 	}
 
