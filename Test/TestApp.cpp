@@ -7,27 +7,31 @@ void TestApp::onStep() {
 	float time = nsfw::Window::instance().getTime();
 	go1.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(2.f, 2.f, 2.f);
 
-	//fp.prep();
-	//fp.draw(go, cam);
-	//fp.post();
+	gp.prep();
+	gp.draw(go1, cam);
+	gp.draw(go2, cam);
+	gp.post();
+
+	//lp.prep();
+	//lp.draw(dl, cam);
+	//lp.post();
 
 	sp.prep();
 	sp.draw(go1, dl);
 	sp.draw(go2, dl);
 	sp.post();
 
-	gp.prep();
-	gp.draw(go1, cam);
-	gp.draw(go2, cam);
-	gp.post();
+	slp.prep();
+	slp.draw(dl, cam);
+	slp.post();
 
-	lp.prep();
-	lp.draw(dl, cam);
-	lp.post();
-
-	cp.prep();
+	/*cp.prep();
 	cp.draw();
-	cp.post();
+	cp.post();*/
+
+	fp.prep();
+	fp.draw();
+	fp.post();
 };
 
 void TestApp::onPlay() {
@@ -84,7 +88,7 @@ void TestApp::onPlay() {
 
 	//setup shadow pass
 	const char* shadowTexNames[] = { "shadowTex" };
-	unsigned shadowTexDepths[] = { nsfw::DEPTH::DEPTH };
+	unsigned shadowTexDepths[] = { nsfw::DEPTH::RED };
 	ass.makeFBO("shadowBuff", 512, 512, 1, shadowTexNames, shadowTexDepths);
 	sp.fbo = "shadowBuff";
 	ass.loadShader("shadowShader", "./shaders/ShadowV.glsl", "./shaders/ShadowF.glsl");
@@ -94,6 +98,17 @@ void TestApp::onPlay() {
 	sp.BufWidth = 512;
 	sp.BufHeight = 512;
 
+	//setup shadow light pass
+	const char* shadLtTexNames[] = { "shadLtTex" };
+	unsigned shadLtDepths[] = { nsfw::DEPTH::RGB };
+	ass.makeFBO("shadLtBuff", ScrW, ScrH, 1, shadLtTexNames, shadLtDepths);
+	slp.fbo = "shadLtBuff";
+	ass.loadShader("shadLtShader", "./shaders/ShadowLightV.glsl", "./shaders/ShadowLightF.glsl");
+	slp.shader = "shadLtShader";
+	slp.PositionMap = "geoDepth";
+	slp.NormalMap = "geoNormal";
+	slp.ShadowMap = "shadowTex";
+
 	//setup light
 	dl.direction = glm::normalize(glm::vec3(-3, 0, 0));
 	dl.color = glm::vec3(0.7f, 0.7f, 0.7f);
@@ -102,6 +117,9 @@ void TestApp::onPlay() {
 	cp.diffusePassTex = "geoDiffuse";
 	cp.lightPassTex = "lightTex";
 	cp.shader = "composit";
+
+	//forwad pass directly draws one texture
+	fp.Tex = "shadLtTex";
 
 	cam.aspect = ScrW / ScrH;
 }

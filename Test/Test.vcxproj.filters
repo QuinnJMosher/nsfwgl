@@ -50,5 +50,8 @@
     <ClInclude Include="ShadowPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowLighting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

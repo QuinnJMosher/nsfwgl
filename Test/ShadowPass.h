@@ -20,7 +20,7 @@ public:
 		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
 		glViewport(0, 0, BufWidth, BufHeight);
 		glClearColor(0.f, 0.f, 0.f, 0.f);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glUseProgram(*shader);
 	}
@@ -32,6 +32,8 @@ public:
 	}
 
 	void draw(const GameObject &go, const DirectionLight &lt) {
+
+		setUniform("lightDir", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
 
 		setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
 		setUniform("lightProjection", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getProjection()));

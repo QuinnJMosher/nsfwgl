@@ -14,8 +14,8 @@ public:
 
 	void prep()
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
-		glClearColor(0.f, 0.f, 0.f, 0.f);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearColor(0.f, 1.f, 0.5f, 1.f);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		

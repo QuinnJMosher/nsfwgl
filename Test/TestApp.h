@@ -9,6 +9,7 @@
 #include "GeoPass.h"
 #include "lightPass.h"
 #include "ShadowPass.h"
+#include "ShadowLighting.h"
 
 #include "ForwardPass.h"
 #include "CompPass.h"
@@ -25,6 +26,7 @@ class TestApp : public nsfw::Application {
 	GeoPass gp;
 	LightPass lp;
 	ShadowPass sp;
+	ShadowLightPass slp;
 	//final passes
 	ForwardPass fp;
 	CompPass cp;
