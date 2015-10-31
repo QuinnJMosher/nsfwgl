@@ -5,8 +5,6 @@ out vec3 FragColor;
 
 uniform vec3 lightDirection;
 
-uniform sampler2D ShadowMap;
-
 void main() {
 	
 	float d = max(0, dot(normalize(normal), lightDirection));

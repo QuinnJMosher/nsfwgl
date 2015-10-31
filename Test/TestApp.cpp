@@ -29,9 +29,9 @@ void TestApp::onStep() {
 	cp.draw();
 	cp.post();*/
 
-	fp.prep();
+	/*fp.prep();
 	fp.draw();
-	fp.post();
+	fp.post();*/
 };
 
 void TestApp::onPlay() {
@@ -88,7 +88,7 @@ void TestApp::onPlay() {
 
 	//setup shadow pass
 	const char* shadowTexNames[] = { "shadowTex" };
-	unsigned shadowTexDepths[] = { nsfw::DEPTH::RED };
+	unsigned shadowTexDepths[] = { nsfw::DEPTH::DEPTH };
 	ass.makeFBO("shadowBuff", 512, 512, 1, shadowTexNames, shadowTexDepths);
 	sp.fbo = "shadowBuff";
 	ass.loadShader("shadowShader", "./shaders/ShadowV.glsl", "./shaders/ShadowF.glsl");
@@ -99,11 +99,11 @@ void TestApp::onPlay() {
 	sp.BufHeight = 512;
 
 	//setup shadow light pass
-	const char* shadLtTexNames[] = { "shadLtTex" };
+	/*const char* shadLtTexNames[] = { "shadLtTex" };
 	unsigned shadLtDepths[] = { nsfw::DEPTH::RGB };
 	ass.makeFBO("shadLtBuff", ScrW, ScrH, 1, shadLtTexNames, shadLtDepths);
-	slp.fbo = "shadLtBuff";
-	ass.loadShader("shadLtShader", "./shaders/ShadowLightV.glsl", "./shaders/ShadowLightF.glsl");
+	slp.fbo = "shadLtBuff";*/
+	ass.loadShader("shadLtShader", "./shaders/ShadowForwardV.glsl", "./shaders/ShadowForward.glsl");
 	slp.shader = "shadLtShader";
 	slp.PositionMap = "geoDepth";
 	slp.NormalMap = "geoNormal";

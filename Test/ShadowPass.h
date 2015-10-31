@@ -20,7 +20,7 @@ public:
 		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
 		glViewport(0, 0, BufWidth, BufHeight);
 		glClearColor(0.f, 0.f, 0.f, 0.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
 
 		glUseProgram(*shader);
 	}

@@ -16,7 +16,7 @@ public:
 
 	void prep()
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE);
@@ -31,23 +31,17 @@ public:
 		glUseProgram(0);
 	}
 
+	glm::mat4 texSpaceOff(0.5f, 0.0f, 0.0f, 0.0f,
+						  0.0f, 0.5f, 0.0f, 0.0f,
+						  0.0f, 0.0f, 0.5f, 0.0f,
+						  0.5f, 0.5f, 0.5f, 1.0f);
+
 	void draw(const DirectionLight &lt, const Camera &cam) {
 
-		glm::vec3 cameraPos = glm::vec3(cam.transform[3][0], cam.transform[3][1], cam.transform[3][2]);
-		setUniform("CameraPos", nsfw::UNIFORM::FLO3, glm::value_ptr(cameraPos));
-
 		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
-		setUniform("lightDiffuse", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.color));
 
 		setUniform("lightProjection", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getProjection()));
 		setUniform("lightView", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getView()));
-
-		unsigned texVal = *PositionMap;
-		setUniform("PosMap", nsfw::UNIFORM::TEX2, &texVal, 0);
-		texVal = *NormalMap;
-		setUniform("NormMap", nsfw::UNIFORM::TEX2, &texVal, 1);
-		texVal = *ShadowMap;
-		setUniform("ShadowMap", nsfw::UNIFORM::TEX2, &texVal, 2);
 
 		auto& ass = nsfw::Assets::instance();
 
