@@ -20,10 +20,4 @@ void main() {
 	}
 	
 	FragColor = vec4(d, d, d, 1);
-
-    //FragColor = vec4(vShadowCoord.zzz,1);
-	//FragColor.a = 1;
-	
-	//FragColor = texture(shadowMap, vShadowCoord.xy);
-	//FragColor = vec4(vShadowCoord.zzz, 1);
 }

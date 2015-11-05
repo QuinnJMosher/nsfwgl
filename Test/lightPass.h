@@ -11,7 +11,7 @@
 class LightPass : public nsfw::RenderPass {
 public:
 
-	nsfw::Asset<nsfw::ASSET::TEXTURE>PositionMap, NormalMap;
+	nsfw::Asset<nsfw::ASSET::TEXTURE>PositionMap, NormalMap, ShadowMap;
 
 	void prep()
 	{
@@ -32,16 +32,25 @@ public:
 
 	void draw(const DirectionLight &lt, const Camera &cam) {
 
+		glm::mat4 texSpaceOff = glm::translate(.5f, .5f, .5f)*glm::scale(.5f, .5f, .5f);
+		setUniform("texSpaceOff", nsfw::UNIFORM::MAT4, glm::value_ptr(texSpaceOff));
+
 		glm::vec3 cameraPos = glm::vec3(cam.transform[3][0], cam.transform[3][1], cam.transform[3][2]);
 		setUniform("CameraPos", nsfw::UNIFORM::FLO3, glm::value_ptr(cameraPos));
+		setUniform("CameraProjection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getProjection()));
+		setUniform("CameraView", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
 		
 		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
 		setUniform("lightDiffuse", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.color));
+		setUniform("lightProjection", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getProjection()));
+		setUniform("lightView", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getView()));
 
 		unsigned texVal = *PositionMap;
 		setUniform("PosMap", nsfw::UNIFORM::TEX2, &texVal, 0);
 		texVal = *NormalMap;
 		setUniform("NormMap", nsfw::UNIFORM::TEX2, &texVal, 1);
+		texVal = *ShadowMap;
+		setUniform("ShadowMap", nsfw::UNIFORM::TEX2, &texVal, 2);
 
 		auto& ass = nsfw::Assets::instance();
 

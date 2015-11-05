@@ -13,25 +13,25 @@ void TestApp::onStep() {
 	gp.draw(go3, cam);
 	gp.post();
 
-	//lp.prep();
-	//lp.draw(dl, cam);
-	//lp.post();
+	lp.prep();
+	lp.draw(dl, cam);
+	lp.post();
 
-	sp.prep();
+	/*sp.prep();
 	sp.draw(go3, dl);
 	sp.draw(go1, dl);
 	sp.draw(go2, dl);
-	sp.post();
+	sp.post();*/
 
-	slp.prep();
+	/*slp.prep();
 	slp.draw(go3, dl, cam);
 	slp.draw(go1, dl, cam);
 	slp.draw(go2, dl, cam);
-	slp.post();
+	slp.post();*/
 
-	/*cp.prep();
+	cp.prep();
 	cp.draw();
-	cp.post();*/
+	cp.post();
 
 	/*fp.prep();
 	fp.draw();

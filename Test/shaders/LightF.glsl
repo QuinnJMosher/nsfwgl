@@ -3,11 +3,17 @@
 in vec2 vTexCoord;
 out vec3 LightOutput;
 
+uniform mat4 texSpaceOff;
+
 uniform vec3 CameraPos;
+uniform mat4 CameraProjection;
+uniform mat4 CameraView;
 uniform float SpecPow = 2;
 
 uniform vec3 lightDirection;
 uniform vec3 lightDiffuse;
+uniform mat4 lightProjection;
+uniform mat4 lightView;
 
 uniform sampler2D PosMap;
 uniform sampler2D NormMap;

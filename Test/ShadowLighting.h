@@ -34,16 +34,9 @@ public:
 
 	void draw(const GameObject go, const DirectionLight &lt, const Camera &cam) {
 
-		glm::mat4 texSpaceOff(0.5f, 0.0f, 0.0f, 0.0f,
-							  0.0f, 0.5f, 0.0f, 0.0f,
-							  0.0f, 0.0f, 0.5f, 0.0f,
-							  0.5f, 0.5f, 0.5f, 1.0f);
-
-
-		texSpaceOff = glm::translate(.5f, .5f, .5f)*glm::scale(.5f,.5f,.5f);
-
-
+		glm::mat4 texSpaceOff = glm::translate(.5f, .5f, .5f)*glm::scale(.5f,.5f,.5f);
 		setUniform("texSpaceOff", nsfw::UNIFORM::MAT4, glm::value_ptr(texSpaceOff));
+
 		unsigned texVal = *ShadowMap;
 		setUniform("shadowMap", nsfw::UNIFORM::TEX2, &texVal, 0);
 
