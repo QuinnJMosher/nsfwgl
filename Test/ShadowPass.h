@@ -18,9 +18,10 @@ public:
 	void prep()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
+		glEnable(GL_DEPTH_TEST);
 		glViewport(0, 0, BufWidth, BufHeight);
 		glClearColor(0.f, 0.f, 0.f, 0.f);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(*shader);
 	}
@@ -28,6 +29,7 @@ public:
 	void post() {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glUseProgram(0);
+		glDisable(GL_DEPTH_TEST);
 		glViewport(0, 0, ScrWidth, ScrHeight);
 	}
 

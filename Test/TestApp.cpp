@@ -5,7 +5,7 @@
 void TestApp::onStep() {
 
 	float time = nsfw::Window::instance().getTime();
-	go1.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(2.f, 2.f, 2.f);
+	go1.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(3.f, 3.f, 3.f);
 
 	gp.prep();
 	gp.draw(go1, cam);
@@ -22,7 +22,8 @@ void TestApp::onStep() {
 	sp.post();
 
 	slp.prep();
-	slp.draw(dl, cam);
+	slp.draw(go1, dl, cam);
+	slp.draw(go2, dl, cam);
 	slp.post();
 
 	/*cp.prep();
@@ -88,7 +89,7 @@ void TestApp::onPlay() {
 
 	//setup shadow pass
 	const char* shadowTexNames[] = { "shadowTex" };
-	unsigned shadowTexDepths[] = { nsfw::DEPTH::DEPTH };
+	unsigned shadowTexDepths[] = { nsfw::DEPTH::RGB };
 	ass.makeFBO("shadowBuff", 512, 512, 1, shadowTexNames, shadowTexDepths);
 	sp.fbo = "shadowBuff";
 	ass.loadShader("shadowShader", "./shaders/ShadowV.glsl", "./shaders/ShadowF.glsl");
@@ -103,10 +104,8 @@ void TestApp::onPlay() {
 	unsigned shadLtDepths[] = { nsfw::DEPTH::RGB };
 	ass.makeFBO("shadLtBuff", ScrW, ScrH, 1, shadLtTexNames, shadLtDepths);
 	slp.fbo = "shadLtBuff";*/
-	ass.loadShader("shadLtShader", "./shaders/ShadowForwardV.glsl", "./shaders/ShadowForward.glsl");
+	ass.loadShader("shadLtShader", "./shaders/ShadowForwardV.glsl", "./shaders/ShadowForwardF.glsl");
 	slp.shader = "shadLtShader";
-	slp.PositionMap = "geoDepth";
-	slp.NormalMap = "geoNormal";
 	slp.ShadowMap = "shadowTex";
 
 	//setup light
