@@ -20,6 +20,7 @@ public:
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		//glEnable(GL_BLEND);
 		//glBlendFunc(GL_ONE, GL_ONE);
+		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glUseProgram(*shader);
@@ -27,7 +28,7 @@ public:
 
 	void post() {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
 		glUseProgram(0);
 	}
 
@@ -37,6 +38,10 @@ public:
 							  0.0f, 0.5f, 0.0f, 0.0f,
 							  0.0f, 0.0f, 0.5f, 0.0f,
 							  0.5f, 0.5f, 0.5f, 1.0f);
+
+
+		texSpaceOff = glm::translate(.5f, .5f, .5f)*glm::scale(.5f,.5f,.5f);
+
 
 		setUniform("texSpaceOff", nsfw::UNIFORM::MAT4, glm::value_ptr(texSpaceOff));
 		unsigned texVal = *ShadowMap;

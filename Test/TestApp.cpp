@@ -10,6 +10,7 @@ void TestApp::onStep() {
 	gp.prep();
 	gp.draw(go1, cam);
 	gp.draw(go2, cam);
+	gp.draw(go3, cam);
 	gp.post();
 
 	//lp.prep();
@@ -17,11 +18,13 @@ void TestApp::onStep() {
 	//lp.post();
 
 	sp.prep();
+	sp.draw(go3, dl);
 	sp.draw(go1, dl);
 	sp.draw(go2, dl);
 	sp.post();
 
 	slp.prep();
+	slp.draw(go3, dl, cam);
 	slp.draw(go1, dl, cam);
 	slp.draw(go2, dl, cam);
 	slp.post();
@@ -66,6 +69,12 @@ void TestApp::onPlay() {
 	go2.mesh = "bunny_Mesh";
 	go2.tris = "bunny_Mesh";
 
+
+	go3.trasform = glm::rotate(90.f, glm::vec3(1, 0, 0)) * glm::scale(20.f,20.f,1.f);
+	go3.mesh = "Quad";
+	go3.tris = "Quad";
+	go3.diffuse = "Cyan";
+
 	fp.shader = "basic";
 	fp.fbo = "testBuff";
 
@@ -90,14 +99,14 @@ void TestApp::onPlay() {
 	//setup shadow pass
 	const char* shadowTexNames[] = { "shadowTex" };
 	unsigned shadowTexDepths[] = { nsfw::DEPTH::RGB };
-	ass.makeFBO("shadowBuff", 512, 512, 1, shadowTexNames, shadowTexDepths);
+	ass.makeFBO("shadowBuff", 1024, 1024, 1, shadowTexNames, shadowTexDepths);
 	sp.fbo = "shadowBuff";
 	ass.loadShader("shadowShader", "./shaders/ShadowV.glsl", "./shaders/ShadowF.glsl");
 	sp.shader = "shadowShader";
 	sp.ScrWidth = ScrW;
 	sp.ScrHeight = ScrH;
-	sp.BufWidth = 512;
-	sp.BufHeight = 512;
+	sp.BufWidth = 1024;
+	sp.BufHeight = 1024;
 
 	//setup shadow light pass
 	/*const char* shadLtTexNames[] = { "shadLtTex" };
@@ -109,7 +118,7 @@ void TestApp::onPlay() {
 	slp.ShadowMap = "shadowTex";
 
 	//setup light
-	dl.direction = glm::normalize(glm::vec3(-3, 0, 0));
+	dl.direction = glm::normalize(glm::vec3(-3, -1, 1));
 	dl.color = glm::vec3(0.7f, 0.7f, 0.7f);
 
 	//setup composite

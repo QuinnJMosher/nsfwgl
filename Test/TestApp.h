@@ -20,6 +20,7 @@ class TestApp : public nsfw::Application {
 	Camera cam;
 	GameObject go1;
 	GameObject go2;
+	GameObject go3;
 	DirectionLight dl;
 
 	//passes

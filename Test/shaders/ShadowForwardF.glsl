@@ -11,11 +11,19 @@ uniform float shadowBais = 0.01;
 
 void main() {
 	
-	float d = max(0, dot(normalize(vNormal.xyz), lightDirection));
+	float d = max(0, dot(normalize(vNormal.xyz), -lightDirection));
 	
-	if (texture(shadowMap, vShadowCoord.xy).x < vShadowCoord.z - shadowBais) {
+	vec4 shadowColor = texture(shadowMap, vShadowCoord.xy);
+	
+	if (shadowColor.z < vShadowCoord.z - shadowBais) {
 		d = 0;
 	}
 	
 	FragColor = vec4(d, d, d, 1);
+
+    //FragColor = vec4(vShadowCoord.zzz,1);
+	//FragColor.a = 1;
+	
+	//FragColor = texture(shadowMap, vShadowCoord.xy);
+	//FragColor = vec4(vShadowCoord.zzz, 1);
 }
