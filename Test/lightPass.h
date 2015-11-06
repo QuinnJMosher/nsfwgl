@@ -37,8 +37,7 @@ public:
 
 		glm::vec3 cameraPos = glm::vec3(cam.transform[3][0], cam.transform[3][1], cam.transform[3][2]);
 		setUniform("CameraPos", nsfw::UNIFORM::FLO3, glm::value_ptr(cameraPos));
-		setUniform("CameraProjection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getProjection()));
-		setUniform("CameraView", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
+		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
 		
 		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
 		setUniform("lightDiffuse", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.color));
