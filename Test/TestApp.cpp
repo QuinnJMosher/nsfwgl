@@ -13,15 +13,15 @@ void TestApp::onStep() {
 	gp.draw(go3, cam);
 	gp.post();
 
-	lp.prep();
-	lp.draw(dl, cam);
-	lp.post();
-
-	/*sp.prep();
+	sp.prep();
 	sp.draw(go3, dl);
 	sp.draw(go1, dl);
 	sp.draw(go2, dl);
-	sp.post();*/
+	sp.post();
+
+	lp.prep();
+	lp.draw(dl, cam);
+	lp.post();
 
 	/*slp.prep();
 	slp.draw(go3, dl, cam);
@@ -95,6 +95,7 @@ void TestApp::onPlay() {
 	lp.shader = "lightShader";
 	lp.PositionMap = "geoDepth";
 	lp.NormalMap = "geoNormal";
+	lp.ShadowMap = "shadowTex";
 
 	//setup shadow pass
 	const char* shadowTexNames[] = { "shadowTex" };

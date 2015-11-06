@@ -7,5 +7,6 @@ out vec2 vTexCoord;
 
 void main() {
 	vTexCoord = TexCoord;
+	
 	gl_Position = Position;
 }
