@@ -40,6 +40,21 @@ void FlyCamera::update(const float time) {
 		input_RL -= (speed * deltaTime);
 	}
 
+	//create movement mat
+	glm::mat4 totalMovementMat = glm::translate((forward * input_UD) + (right * input_RL));
+	transform = totalMovementMat * transform;
+
 	//rotation input
-	//TODO
+	double mouseX, mouseY;
+	context.getMouse(&mouseX, &mouseY);
+	glm::vec2 deltaMouse = glm::vec2(mouseX - lastMousePos.x, mouseY - lastMousePos.y);
+	lastMousePos = glm::vec2(mouseX, mouseY);
+
+	glm::vec3 currentPos = glm::vec3(transform[3]);
+
+	glm::vec3 inFrontOfMe = ((forward * 10.f) + currentPos);
+	glm::vec3 turnRightLeft = glm::rotate(forward, (mouseSen * deltaTime) * -deltaMouse.y, right);
+	glm::vec3 turnUpDown = glm::rotate(forward, (mouseSen * deltaTime) * -deltaMouse.x, up);
+
+	this->lookAt(currentPos, inFrontOfMe + (turnRightLeft + turnUpDown) * 10.f, up);
 }
