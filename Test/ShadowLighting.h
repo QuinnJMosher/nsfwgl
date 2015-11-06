@@ -32,7 +32,7 @@ public:
 		glUseProgram(0);
 	}
 
-	void draw(const GameObject go, const DirectionLight &lt, const Camera &cam) {
+	void draw(const GameObject go, const DirectionLight &lt, const Camera* cam) {
 
 		glm::mat4 texSpaceOff = glm::translate(.5f, .5f, .5f)*glm::scale(.5f,.5f,.5f);
 		setUniform("texSpaceOff", nsfw::UNIFORM::MAT4, glm::value_ptr(texSpaceOff));
@@ -47,8 +47,8 @@ public:
 
 		setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
 
-		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getProjection()));
-		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
+		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getProjection()));
+		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getView()));
 
 		glBindVertexArray(*go.mesh);
 		glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);

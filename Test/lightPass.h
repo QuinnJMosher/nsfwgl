@@ -30,14 +30,14 @@ public:
 		glUseProgram(0);
 	}
 
-	void draw(const DirectionLight &lt, const Camera &cam) {
+	void draw(const DirectionLight &lt, const Camera* cam) {
 
 		glm::mat4 texSpaceOff = glm::translate(.5f, .5f, .5f)*glm::scale(.5f, .5f, .5f);
 		setUniform("texSpaceOff", nsfw::UNIFORM::MAT4, glm::value_ptr(texSpaceOff));
 
-		glm::vec3 cameraPos = glm::vec3(cam.transform[3][0], cam.transform[3][1], cam.transform[3][2]);
+		glm::vec3 cameraPos = glm::vec3(cam->transform[3][0], cam->transform[3][1], cam->transform[3][2]);
 		setUniform("CameraPos", nsfw::UNIFORM::FLO3, glm::value_ptr(cameraPos));
-		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
+		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getView()));
 		
 		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
 		setUniform("lightDiffuse", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.color));

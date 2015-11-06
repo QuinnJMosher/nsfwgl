@@ -26,9 +26,9 @@ public:
 		glUseProgram(0);
 	}
 
-	void draw(const GameObject &go, const Camera &cam) {
-		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getProjection()));
-		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
+	void draw(const GameObject &go, const Camera* cam) {
+		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getProjection()));
+		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getView()));
 
 		setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
 		unsigned texVal = *go.diffuse;

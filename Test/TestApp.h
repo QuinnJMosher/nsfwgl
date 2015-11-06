@@ -17,7 +17,7 @@
 class TestApp : public nsfw::Application {
 	
 	//objects
-	Camera cam;
+	Camera* cam;
 	GameObject go1;
 	GameObject go2;
 	GameObject go3;

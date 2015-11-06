@@ -34,10 +34,10 @@ void FlyCamera::update(const float time) {
 		input_UD -= (speed * deltaTime);
 	}
 	if (context.getKey(65)) {//a
-		input_RL += (speed * deltaTime);
+		input_RL -= (speed * deltaTime);
 	}
 	if (context.getKey(68)) {//d
-		input_RL -= (speed * deltaTime);
+		input_RL += (speed * deltaTime);
 	}
 
 	//create movement mat
@@ -56,5 +56,8 @@ void FlyCamera::update(const float time) {
 	glm::vec3 turnRightLeft = glm::rotate(forward, (mouseSen * deltaTime) * -deltaMouse.y, right);
 	glm::vec3 turnUpDown = glm::rotate(forward, (mouseSen * deltaTime) * -deltaMouse.x, up);
 
-	this->lookAt(currentPos, inFrontOfMe + (turnRightLeft + turnUpDown) * 10.f, up);
+
+	if (context.getKey('E')) {
+		this->lookAt(currentPos, inFrontOfMe + (turnRightLeft + turnUpDown) * 10.f, up);
+	}
 }

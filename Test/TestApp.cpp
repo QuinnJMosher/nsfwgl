@@ -1,11 +1,14 @@
 #include "TestApp.h"
 #include "Window.h"
 #include "glm/ext.hpp"
+#include "FlyCamera.h"
 
 void TestApp::onStep() {
 
 	float time = nsfw::Window::instance().getTime();
 	go1.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(3.f, 3.f, 3.f);
+
+	cam->update(time);
 
 	gp.prep();
 	gp.draw(go1, cam);
@@ -57,7 +60,6 @@ void TestApp::onPlay() {
 	unsigned baseTexDepths[] = { nsfw::DEPTH::RGB };
 	ass.makeFBO("testBuff", ScrW, ScrH, 1, baseTexNames, baseTexDepths);
 
-	cam.lookAt(glm::vec3(0, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 	go1.trasform = glm::mat4(1);
 	go1.diffuse = "spear_soulspear_diffuse.tga";
@@ -130,7 +132,15 @@ void TestApp::onPlay() {
 	//forwad pass directly draws one texture
 	fp.Tex = "shadLtTex";
 
-	cam.aspect = ScrW / ScrH;
+	//setup camera
+	//fly cam only
+	FlyCamera* flyCamPrep = new FlyCamera();
+	flyCamPrep->speed = 10;
+	flyCamPrep->mouseSen = 20;
+	cam = flyCamPrep;
+	//cam = new Camera();
+	cam->lookAt(glm::vec3(0, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	cam->aspect = ScrW / ScrH;
 }
 
 void TestApp::onInit() {
