@@ -44,12 +44,9 @@ public:
 		setUniform("lightProjection", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getProjection()));
 		setUniform("lightView", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getView()));
 
-		unsigned texVal = *PositionMap;
-		setUniform("PosMap", nsfw::UNIFORM::TEX2, &texVal, 0);
-		texVal = *NormalMap;
-		setUniform("NormMap", nsfw::UNIFORM::TEX2, &texVal, 1);
-		texVal = *ShadowMap;
-		setUniform("ShadowMap", nsfw::UNIFORM::TEX2, &texVal, 2);
+		setUniform("PosMap", nsfw::UNIFORM::TEX2, PositionMap, 0);
+		setUniform("NormMap", nsfw::UNIFORM::TEX2, NormalMap, 1);
+		setUniform("ShadowMap", nsfw::UNIFORM::TEX2, ShadowMap, 2);
 
 		auto& ass = nsfw::Assets::instance();
 

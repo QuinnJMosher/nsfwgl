@@ -30,10 +30,8 @@ public:
 	}
 
 	void draw() {
-		unsigned texVal = *diffusePassTex;
-		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &texVal, 0);
-		texVal = *lightPassTex;
-		setUniform("Light", nsfw::UNIFORM::TEX2, &texVal, 1);
+		setUniform("Diffuse", nsfw::UNIFORM::TEX2, diffusePassTex, 0);
+		setUniform("Light", nsfw::UNIFORM::TEX2, lightPassTex, 1);
 
 		auto& ass = nsfw::Assets::instance();
 

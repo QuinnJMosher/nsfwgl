@@ -37,8 +37,7 @@ public:
 		glm::mat4 texSpaceOff = glm::translate(.5f, .5f, .5f)*glm::scale(.5f,.5f,.5f);
 		setUniform("texSpaceOff", nsfw::UNIFORM::MAT4, glm::value_ptr(texSpaceOff));
 
-		unsigned texVal = *ShadowMap;
-		setUniform("shadowMap", nsfw::UNIFORM::TEX2, &texVal, 0);
+		setUniform("shadowMap", nsfw::UNIFORM::TEX2, ShadowMap, 0);
 
 		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
 

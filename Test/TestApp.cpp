@@ -81,7 +81,7 @@ void TestApp::onPlay() {
 	fp.fbo = "testBuff";
 
 	//setup GeoPass
-	const char* geoTexNames[] = { "geoDiffuse", "geoNormal", "geoDepth" };
+	const char* geoTexNames[] = { "geoDiffuse", "geoNormal", "geoPos" };
 	unsigned geoTexDepths[] = { nsfw::DEPTH::RGB, nsfw::DEPTH::RGB, nsfw::DEPTH::RGB };
 	ass.makeFBO("geoBuff", ScrW, ScrH, 3, geoTexNames, geoTexDepths);
 	gp.fbo = "geoBuff";
@@ -95,7 +95,7 @@ void TestApp::onPlay() {
 	lp.fbo = "lightBuff";
 	ass.loadShader("lightShader", "./shaders/lightV.glsl", "./shaders/lightF.glsl");
 	lp.shader = "lightShader";
-	lp.PositionMap = "geoDepth";
+	lp.PositionMap = "geoPos";
 	lp.NormalMap = "geoNormal";
 	lp.ShadowMap = "shadowTex";
 
@@ -121,13 +121,15 @@ void TestApp::onPlay() {
 	slp.ShadowMap = "shadowTex";
 
 	//setup light
-	dl.direction = glm::normalize(glm::vec3(-3, -1, 1));
+	dl.direction = glm::normalize(glm::vec3(0, -1, 1));
 	dl.color = glm::vec3(0.7f, 0.7f, 0.7f);
 
 	//setup composite
 	cp.diffusePassTex = "geoDiffuse";
 	cp.lightPassTex = "lightTex";
 	cp.shader = "composit";
+
+	//cp.lightPassTex = "geoNormal";
 
 	//forwad pass directly draws one texture
 	fp.Tex = "shadLtTex";

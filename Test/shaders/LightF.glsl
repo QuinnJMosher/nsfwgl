@@ -22,19 +22,21 @@ uniform sampler2D NormMap;
 uniform sampler2D ShadowMap;
 
 void main() {
-	vec3 normal = normalize(texture(NormMap, vTexCoord).xyz);
+	vec3 normal = texture(NormMap, vTexCoord).xyz;
 	vec3 position = texture(PosMap, vTexCoord).xyz;
 	vec3 eye = normalize(CameraPos - position); // for specular and deprojection
+	vec3 vLightDir = (View * vec4(lightDirection, 0)).xyz;
+	
 	
 	vec4 shadowCoord = texSpaceOff * lightProjection * lightView * inverse(View)  * vec4(position, 1);
 	vec4 shadowValue = texture(ShadowMap, shadowCoord.xy);
 	
 	vec3 ambient = lightDiffuse * (1.f / 3.f);
 	
-	float lambert = max(0, dot(normal, -lightDirection));
-	vec3 diffuse = lightDiffuse * lambert;
+	float lambert = max(0, dot(normal, vLightDir));
+	vec3 diffuse = lambert * lightDiffuse;
 	
-	vec3 R = normalize(reflect(lightDirection, normal));
+	vec3 R = normalize(reflect(vLightDir, normal));
 	
 	float specTerm = pow(max(0.0f, dot(R, eye)), SpecPow);
 	vec3 specular = lightDiffuse * specTerm;
@@ -48,7 +50,8 @@ void main() {
 		//LightOutput = vec3(0, 0, 1);
 	}
 	
-	LightOutput = ambient + diffuse + specular;//cancel out shadowing
+	//LightOutput = ambient + diffuse + specular;//cancel out shadowing
+	LightOutput = diffuse;//cancel out shadowing
 	
 	//LightOutput = shadowValue.xyz;
 	//LightOutput = (inverse(View) * vec4(position,1)).xyz;
