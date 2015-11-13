@@ -39,7 +39,7 @@ public:
 		setUniform("CameraPos", nsfw::UNIFORM::FLO3, glm::value_ptr(cameraPos));
 		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getView()));
 		
-		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
+		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(glm::normalize(lt.direction)));
 		setUniform("lightDiffuse", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.color));
 		setUniform("lightProjection", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getProjection()));
 		setUniform("lightView", nsfw::UNIFORM::MAT4, glm::value_ptr(lt.getView()));
