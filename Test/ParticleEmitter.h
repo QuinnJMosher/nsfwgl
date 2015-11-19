@@ -47,7 +47,7 @@ private:
 		float	  size;
 		float	  lifetime;
 	};
-	bool ParticleSrtFunc(Particle& left, Particle& right);
+	static bool ParticleSrtFunc(Particle& left, Particle& right);
 
 	unsigned  particleBankSize;
 	Particle* particleBank;

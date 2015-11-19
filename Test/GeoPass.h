@@ -6,6 +6,7 @@
 
 #include "GameObject.h"
 #include "Camera.h"
+#include "ParticleEmitter.h"
 
 class GeoPass : public nsfw::RenderPass {
 public:
@@ -33,6 +34,22 @@ public:
 		setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
 		unsigned texVal = *go.diffuse;
 		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &texVal);
+
+		glBindVertexArray(*go.mesh);
+		glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
+	}
+
+	void drawEmitter(const ParticleEmitter &pe, const Camera* cam) {
+		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getProjection()));
+		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getView()));
+
+		
+		setUniform("Diffuse", nsfw::UNIFORM::TEX2, pe.particleTex);
+		
+
+		for (unsigned i = 0; i < pe.GetFirstEmptyLocation(); i++) {
+			setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
+		}
 
 		glBindVertexArray(*go.mesh);
 		glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
