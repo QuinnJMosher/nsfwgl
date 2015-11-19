@@ -8,19 +8,30 @@ void TestApp::onStep() {
 	float time = nsfw::Window::instance().getTime();
 	go1.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(3.f, 3.f, 3.f);
 
+	//force emit particle
+	if (nsfw::Window::instance().getKey('P') && !inputDown) {
+		pe.MakeParticle();
+		inputDown = true;
+	}
+	else {
+		inputDown = false;
+	}
+
 	cam->update(time);
+	pe.Update(time);
 
 	gp.prep();
 	gp.draw(go1, cam);
-	gp.draw(go2, cam);
-	gp.draw(go3, cam);
+	//gp.draw(go2, cam);
+	//gp.draw(go3, cam);
+	gp.drawEmitter(pe, cam);
 	gp.post();
 
-	sp.prep();
+	/*sp.prep();
 	sp.draw(go3, dl);
 	sp.draw(go1, dl);
 	sp.draw(go2, dl);
-	sp.post();
+	sp.post();*/
 
 	lp.prep();
 	lp.draw(dl, cam);
@@ -76,6 +87,17 @@ void TestApp::onPlay() {
 	go3.mesh = "Quad";
 	go3.tris = "Quad";
 	go3.diffuse = "Cyan";
+
+	//setup perticle emitter
+	pe.init(100);
+	//pe.particleModel default 
+	//pe.particleTris default
+	//pe.particleTex default
+	pe.startLocation = glm::vec4(0, 0, 0, 1);
+	pe.startSpeed = 4.0f;
+	pe.startSize = .4;
+	pe.lifeLength = 1;
+	pe.intervalTime = .01;
 
 	fp.shader = "basic";
 	fp.fbo = "testBuff";
@@ -143,6 +165,9 @@ void TestApp::onPlay() {
 	//cam = new Camera();
 	cam->lookAt(glm::vec3(0, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	cam->aspect = ScrW / ScrH;
+
+	//lazy input stuff
+	inputDown = false;
 }
 
 void TestApp::onInit() {

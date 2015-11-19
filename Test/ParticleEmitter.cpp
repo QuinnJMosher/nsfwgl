@@ -35,8 +35,11 @@ void ParticleEmitter::MakeParticle() {
 
 		newPart.position = startLocation;
 		newPart.velocity = glm::vec4(
-							glm::normalize(glm::vec3(rand() % 10, rand() % 10, rand() % 10)),
+							glm::normalize(glm::vec3(rand() % 20 - 10, rand() % 20 - 10, rand() % 20 - 10)),
 							0);
+		/*newPart.velocity = glm::vec4(
+			glm::normalize(glm::vec3(1, 0, 1)),
+			0);*/
 		newPart.velocity *= startSpeed;
 		newPart.size = startSize;
 		newPart.lifetime = lifeLength;
@@ -44,7 +47,7 @@ void ParticleEmitter::MakeParticle() {
 		particleBank[firstEmptyLocation] = newPart;
 		firstEmptyLocation++;
 
-		nextParticleTime = intervalTime;
+		nextParticleTime = 0;
 	}
 }
 
@@ -59,7 +62,7 @@ void ParticleEmitter::Update(float in_time, bool in_forceSort) {
 
 		particleBank[i].lifetime -= deltaTime;
 
-		if (particleBank[i].lifetime > 0) {
+		if (IsParticleAlive(i)) {
 			particleBank[i].position += particleBank[i].velocity * deltaTime;
 		}
 		else 
@@ -81,22 +84,22 @@ void ParticleEmitter::Update(float in_time, bool in_forceSort) {
 	}
 }
 
-glm::mat4 ParticleEmitter::GetParticleMatrix(const unsigned in_particle) {
+glm::mat4 ParticleEmitter::GetParticleMatrix(const unsigned in_particle) const {
 	glm::vec3 pos(particleBank[in_particle].position);
 	float	  scl(particleBank[in_particle].size);
 	
 	return glm::translate(pos) * glm::scale(scl, scl, scl);
 }
 
-bool ParticleEmitter::IsParticleAlive(const unsigned in_particle) {
+bool ParticleEmitter::IsParticleAlive(const unsigned in_particle) const {
 	return (particleBank[in_particle].lifetime > 0);
 }
 
-unsigned ParticleEmitter::GetFirstEmptyLocation() {
+unsigned ParticleEmitter::GetFirstEmptyLocation() const {
 	return firstEmptyLocation;
 }
 
-unsigned ParticleEmitter::GetBankSize() {
+unsigned ParticleEmitter::GetBankSize() const {
 	return particleBankSize;
 }
 
@@ -110,8 +113,8 @@ void ParticleEmitter::SortParticleBank() {
 
 	int i = 0;
 	while (i < particleBankSize) {
-		if (particleBank[i].lifetime == 0) {
-			firstEmptyLocation = i + 1;
+		if (!IsParticleAlive(i)) {
+			firstEmptyLocation = i;
 			break;
 		}
 		i++;
@@ -119,5 +122,5 @@ void ParticleEmitter::SortParticleBank() {
 }
 
 bool ParticleEmitter::ParticleSrtFunc(Particle& left, Particle& right) {
-	return left.lifetime < right.lifetime;
+	return left.lifetime > right.lifetime;
 }
