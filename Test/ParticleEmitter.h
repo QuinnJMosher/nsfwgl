@@ -19,21 +19,26 @@ public:
 	void init(const unsigned in_bankSize = 100); //asserts in_bankSize != 0;
 
 	void MakeParticle();
-	void Update(float in_time);
-	bool GetParticleMatrix(const unsigned in_particle);//returns true if there is anoter particle
+	void Update(float in_time, bool in_forceSort = false);
+
+	glm::mat4 GetParticleMatrix(const unsigned in_particle);
+	bool IsParticleAlive(const unsigned in_particle);
+	unsigned GetFirstEmptyLocation();
 	
-	int  GetBankSize();
+	unsigned GetBankSize();
 
 private:
 	//bank management
 	void KillParticle(const unsigned in_particle);
-	int  firstEmptyLocation;
+
+	void SortParticleBank();
+	unsigned  firstEmptyLocation;
 
 	//timeManagement
 	float lastTime;
 	float deltaTime;
 
-	float nextParticleTime;
+	float nextParticleTime; //ammount of time since last particle was emited
 
 	struct Particle
 	{
@@ -42,7 +47,8 @@ private:
 		float	  size;
 		float	  lifetime;
 	};
+	bool ParticleSrtFunc(Particle& left, Particle& right);
 
-	int		  particleBankSize;
+	unsigned  particleBankSize;
 	Particle* particleBank;
 };
