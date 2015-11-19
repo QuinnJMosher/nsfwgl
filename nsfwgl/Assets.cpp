@@ -89,7 +89,7 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	if (setINTERNAL(ASSET::VAO, name, newVAO)) {
 		if (setINTERNAL(ASSET::VBO, name, newVBO)) {
 			if (setINTERNAL(ASSET::IBO, name, newIBO)) {
-				return setINTERNAL(ASSET::VERTEX_COUNT, name, vsize);
+				return setINTERNAL(ASSET::VERTEX_COUNT, name, tsize);
 			}
 		}
 	}
