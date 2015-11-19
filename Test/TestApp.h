@@ -15,9 +15,6 @@
 #include "CompPass.h"
 
 class TestApp : public nsfw::Application {
-
-	//lazy input handling
-	bool inputDown;
 	
 	//objects
 	Camera* cam;
@@ -25,7 +22,6 @@ class TestApp : public nsfw::Application {
 	GameObject go2;
 	GameObject go3;
 	DirectionLight dl;
-	ParticleEmitter pe;
 
 	//passes
 	GeoPass gp;

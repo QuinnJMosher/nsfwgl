@@ -21,11 +21,11 @@ public:
 	void MakeParticle();
 	void Update(float in_time, bool in_forceSort = false);
 
-	glm::mat4 GetParticleMatrix(const unsigned in_particle) const;
-	bool IsParticleAlive(const unsigned in_particle) const;
-	unsigned GetFirstEmptyLocation() const;
+	glm::mat4 GetParticleMatrix(const unsigned in_particle);
+	bool IsParticleAlive(const unsigned in_particle);
+	unsigned GetFirstEmptyLocation();
 	
-	unsigned GetBankSize() const;
+	unsigned GetBankSize();
 
 private:
 	//bank management
@@ -42,10 +42,6 @@ private:
 
 	struct Particle
 	{
-		Particle() {
-			size = 0;
-			lifetime = 0;
-		}
 		glm::vec4 position;
 		glm::vec4 velocity;
 		float	  size;

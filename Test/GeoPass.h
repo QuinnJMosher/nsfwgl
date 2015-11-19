@@ -48,11 +48,10 @@ public:
 		
 
 		for (unsigned i = 0; i < pe.GetFirstEmptyLocation(); i++) {
-			assert(pe.IsParticleAlive(i));
-			setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(pe.GetParticleMatrix(i)));
-
-			glBindVertexArray(*pe.particleModel);
-			glDrawElements(GL_TRIANGLES, *pe.particleTris, GL_UNSIGNED_INT, 0);
+			setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
 		}
+
+		glBindVertexArray(*go.mesh);
+		glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
 	}
 };
