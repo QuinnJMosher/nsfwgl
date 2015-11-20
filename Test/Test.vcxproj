@@ -143,6 +143,7 @@
     <ClInclude Include="ForwardPass.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeoPass.h" />
+    <ClInclude Include="GPUParticlesPass.h" />
     <ClInclude Include="lightPass.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="ShadowLighting.h" />
