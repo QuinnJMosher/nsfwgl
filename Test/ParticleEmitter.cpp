@@ -2,6 +2,7 @@
 #include <random>
 #include <algorithm>
 #include "glm\ext.hpp"
+#include "Camera.h"
 
 void ParticleEmitter::init(const unsigned in_bankSize) {
 	
@@ -10,8 +11,8 @@ void ParticleEmitter::init(const unsigned in_bankSize) {
 	particleBankSize = in_bankSize;
 	particleBank = new Particle[in_bankSize];
 
-	particleModel = "Cube";
-	particleTris  = "Cube";
+	particleModel = "Quad";
+	particleTris  = "Quad";
 	particleTex   = "Cyan";
 
 	startLocation = glm::vec4(0, 0, 0, 1);
@@ -26,6 +27,9 @@ void ParticleEmitter::init(const unsigned in_bankSize) {
 	deltaTime = 0;
 
 	nextParticleTime = 0;
+
+	bilboardCam = nullptr;
+
 }
 
 void ParticleEmitter::MakeParticle() {
@@ -87,8 +91,22 @@ void ParticleEmitter::Update(float in_time, bool in_forceSort) {
 glm::mat4 ParticleEmitter::GetParticleMatrix(const unsigned in_particle) const {
 	glm::vec3 pos(particleBank[in_particle].position);
 	float	  scl(particleBank[in_particle].size);
-	
-	return glm::translate(pos) * glm::scale(scl, scl, scl);
+
+	glm::mat4 bilboardMat = glm::mat4(1);
+
+	if (bilboardCam != nullptr) {
+
+		glm::vec3 zAxis = glm::normalize(glm::vec3(bilboardCam->transform[3]) - glm::vec3(particleBank[in_particle].position));
+		glm::vec3 xAxis = glm::cross(glm::vec3(bilboardCam->transform[3]), zAxis);
+		glm::vec3 yAxis = glm::cross(zAxis, xAxis);
+
+		bilboardMat = glm::mat4(glm::vec4(xAxis,   0),
+								glm::vec4(yAxis,   0),
+								glm::vec4(zAxis,   0),
+								glm::vec4(0, 0, 0, 1));
+	}
+
+	return bilboardMat * glm::translate(pos) * glm::scale(scl, scl, scl);
 }
 
 bool ParticleEmitter::IsParticleAlive(const unsigned in_particle) const {
@@ -123,4 +141,8 @@ void ParticleEmitter::SortParticleBank() {
 
 bool ParticleEmitter::ParticleSrtFunc(Particle& left, Particle& right) {
 	return left.lifetime > right.lifetime;
+}
+
+void ParticleEmitter::SetBilboardContext(Camera* in_cam) {
+	bilboardCam = in_cam;
 }

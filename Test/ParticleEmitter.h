@@ -2,6 +2,8 @@
 #include "glm\glm.hpp"
 #include "Assets.h"
 
+class Camera;
+
 class ParticleEmitter {
 
 public:
@@ -27,6 +29,8 @@ public:
 	
 	unsigned GetBankSize() const;
 
+	void SetBilboardContext(Camera* in_cam);
+
 private:
 	//bank management
 	void KillParticle(const unsigned in_particle);
@@ -37,6 +41,9 @@ private:
 	//timeManagement
 	float lastTime;
 	float deltaTime;
+
+	//bilboarding
+	Camera* bilboardCam;
 
 	float nextParticleTime; //ammount of time since last particle was emited
 

@@ -89,11 +89,11 @@ void TestApp::onPlay() {
 	go3.diffuse = "Cyan";
 
 	//setup perticle emitter
-	pe.init(100);
+	pe.init(30);
 	//pe.particleModel default 
 	//pe.particleTris default
 	//pe.particleTex default
-	pe.startLocation = glm::vec4(0, 0, 0, 1);
+	pe.startLocation = glm::vec4(5, 3, 2, 1);
 	pe.startSpeed = 4.0f;
 	pe.startSize = .4;
 	pe.lifeLength = 1;
@@ -165,6 +165,9 @@ void TestApp::onPlay() {
 	//cam = new Camera();
 	cam->lookAt(glm::vec3(0, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	cam->aspect = ScrW / ScrH;
+
+	//give particle emitter bilboarding a context
+	pe.SetBilboardContext(cam);
 
 	//lazy input stuff
 	inputDown = false;
