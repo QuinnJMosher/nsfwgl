@@ -8,6 +8,7 @@
 #include <fstream>
 
 #include "Vertex.h"
+#include "ParticleVertex.h"
 #include "Assets.h"
 
 using namespace nsfw::ASSET;
@@ -96,6 +97,63 @@ bool nsfw::Assets::makeVAO(const char * name, const struct Vertex *verts, unsign
 	
 	//TODO_D("Should generate VBO, IBO, VAO, and VERTEX_COUNT using the parameters, storing them in the 'handles' map.\nThis is where vertex attributes are set!");
 	return false;
+}
+
+bool nsfw::Assets::makeVAO(const char *name, unsigned particleMax) {
+	ASSET_LOG(GL_HANDLE_TYPE::VBO);
+	ASSET_LOG(GL_HANDLE_TYPE::VBO);
+	ASSET_LOG(GL_HANDLE_TYPE::VAO);
+	ASSET_LOG(GL_HANDLE_TYPE::VAO);
+
+	GL_HANDLE* VAOs;
+	GL_HANDLE* VBOs;
+
+	glGenVertexArrays(2, VAOs);
+	glGenBuffers(2, VBOs);
+
+	//buffer 0
+
+	glBindVertexArray(VAOs[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
+	glBufferData(GL_ARRAY_BUFFER, particleMax * sizeof(ParticleVertex), nullptr, GL_DYNAMIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)sizeof(glm::vec3));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)(sizeof(glm::vec3) * 2));
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)((sizeof(glm::vec3) * 2) + sizeof(float)));
+
+	//buffer 1
+
+	glBindVertexArray(VAOs[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+	glBufferData(GL_ARRAY_BUFFER, particleMax * sizeof(ParticleVertex), nullptr, GL_DYNAMIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)sizeof(glm::vec3));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)(sizeof(glm::vec3) * 2));
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (void*)((sizeof(glm::vec3) * 2) + sizeof(float)));
+
+	//unbind
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	setINTERNAL(ASSET::VBO, name, VBOs[0]);
+	setINTERNAL(ASSET::VBO, name, VBOs[1]);
+	setINTERNAL(ASSET::VAO, name, VAOs[0]);
+	setINTERNAL(ASSET::VAO, name, VAOs[1]);
+
+	return true;
 }
 
 bool nsfw::Assets::makeFBO(const char * name, unsigned w, unsigned h, unsigned nTextures, const char * names[], const unsigned depths[])
@@ -285,6 +343,43 @@ bool nsfw::Assets::loadShader(const char * name, const char * vpath, const char 
 
 	return setINTERNAL(ASSET::SHADER, name, program);
 	//TODO_D("Load shader from a file.");
+}
+
+bool nsfw::Assets::loadShader(const char *name, const char *vpath, const char *gpath, const char *fpath) {
+	ASSET_LOG(GL_HANDLE_TYPE::SHADER);
+	
+	GL_HANDLE vertShader = internLoadShader(GL_VERTEX_SHADER,	vpath);
+	GL_HANDLE geomShader = internLoadShader(GL_GEOMETRY_SHADER, gpath);
+	GL_HANDLE fragShader = internLoadShader(GL_FRAGMENT_SHADER, fpath);
+
+	GL_HANDLE newProgram = glCreateProgram();
+	glAttachShader(newProgram, vertShader);
+	glAttachShader(newProgram, geomShader);
+	glAttachShader(newProgram, fragShader);
+	glLinkProgram(newProgram);
+
+	glDeleteShader(vertShader);
+	glDeleteShader(geomShader);
+	glDeleteShader(fragShader);
+
+	return setINTERNAL(ASSET::SHADER, name, newProgram);
+}
+
+bool nsfw::Assets::loadFeedBackShader(const char *name, const char *vpath) {
+	GL_HANDLE vertShader = internLoadShader(GL_VERTEX_SHADER, vpath);
+
+	GL_HANDLE newProgram = glCreateProgram();
+	glAttachShader(newProgram, vertShader);
+
+	const char* varNames[] = { "position", "velocity", "size", "lifeTime" };
+
+	glTransformFeedbackVaryings(newProgram, 4, varNames, GL_INTERLEAVED_ATTRIBS);
+
+	glLinkProgram(newProgram);
+
+	glDeleteShader(vertShader);
+
+	return setINTERNAL(ASSET::SHADER, name, newProgram);
 }
 
 bool nsfw::Assets::loadFBX(const char * name, const char * path)

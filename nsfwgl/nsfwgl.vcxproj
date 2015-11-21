@@ -165,6 +165,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="gl_core_4_4.h" />
+    <ClInclude Include="ParticleVertex.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="nsfw.h" />
