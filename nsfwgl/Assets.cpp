@@ -105,8 +105,8 @@ bool nsfw::Assets::makeVAO(const char *name, unsigned particleMax) {
 	ASSET_LOG(GL_HANDLE_TYPE::VAO);
 	ASSET_LOG(GL_HANDLE_TYPE::VAO);
 
-	GL_HANDLE* VAOs;
-	GL_HANDLE* VBOs;
+	GL_HANDLE* VAOs = 0;
+	GL_HANDLE* VBOs = 0;
 
 	glGenVertexArrays(2, VAOs);
 	glGenBuffers(2, VBOs);
@@ -148,10 +148,12 @@ bool nsfw::Assets::makeVAO(const char *name, unsigned particleMax) {
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	setINTERNAL(ASSET::VBO, name, VBOs[0]);
-	setINTERNAL(ASSET::VBO, name, VBOs[1]);
-	setINTERNAL(ASSET::VAO, name, VAOs[0]);
-	setINTERNAL(ASSET::VAO, name, VAOs[1]);
+	std::string strName = name;
+
+	setINTERNAL(ASSET::VBO, (strName + "_0").c_str(), VBOs[0]);
+	setINTERNAL(ASSET::VBO, (strName + "_1").c_str(), VBOs[1]);
+	setINTERNAL(ASSET::VAO, (strName + "_0").c_str(), VAOs[0]);
+	setINTERNAL(ASSET::VAO, (strName + "_1").c_str(), VAOs[1]);
 
 	return true;
 }

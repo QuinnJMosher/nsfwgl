@@ -1,10 +1,15 @@
 #pragma once
 #include "glm\glm.hpp"
 
-struct ParticleVertex
+namespace nsfw
 {
-	glm::vec3 position;
-	glm::vec3 velocity;
-	float size;
-	float lifeTime;
-};
+
+	struct ParticleVertex
+	{
+		glm::vec3 position;
+		glm::vec3 velocity;
+		float size;
+		float lifeTime;
+	};
+
+}
