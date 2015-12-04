@@ -60,6 +60,9 @@ public:
 		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
 		setUniform("CamTransform", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.transform));
 
+		setUniform("size", nsfw::UNIFORM::FLO1, &size);
+		setUniform("color", nsfw::UNIFORM::FLO4, glm::value_ptr(color));
+
 		if (updatingBuffer0) {
 			glBindVertexArray(*VAO_1);
 		}

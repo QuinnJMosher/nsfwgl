@@ -139,6 +139,7 @@ namespace nsfw
 		bool loadTexture(const char *name, const char *path);
 	
 		// should load a shader from file
+		bool loadShader(const char *name, const char *vpath);
 		bool loadShader(const char *name, const char *vpath, const char *fpath);
 		bool loadShader(const char *name, const char *vpath, const char *gpath, const char *fpath);
 		bool loadFeedBackShader(const char *name, const char *vpath);

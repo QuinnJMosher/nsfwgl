@@ -367,6 +367,20 @@ bool nsfw::Assets::loadShader(const char *name, const char *vpath, const char *g
 	return setINTERNAL(ASSET::SHADER, name, newProgram);
 }
 
+bool nsfw::Assets::loadShader(const char *name, const char *vpath) {
+	ASSET_LOG(GL_HANDLE_TYPE::SHADER);
+
+	GL_HANDLE vertShader = internLoadShader(GL_VERTEX_SHADER, vpath);
+
+	GL_HANDLE newProgram = glCreateProgram();
+	glAttachShader(newProgram, vertShader);
+	glLinkProgram(newProgram);
+
+	glDeleteShader(vertShader);
+
+	return setINTERNAL(ASSET::SHADER, name, newProgram);
+}
+
 bool nsfw::Assets::loadFeedBackShader(const char *name, const char *vpath) {
 	GL_HANDLE vertShader = internLoadShader(GL_VERTEX_SHADER, vpath);
 
