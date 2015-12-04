@@ -11,12 +11,12 @@ class GPUParticleEmitter : public nsfw::RenderPass {
 	
 public:
 	void Prep() {
-		glBindFramebuffer(GL_FRAMEBUFFER, *targetBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
 	}
 	void Post() {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-	void Update(float time, const Camera& cam) {
+	void Update(float time, const Camera* cam) {
 
 		//update
 		shader = updateShader.name.c_str();
@@ -56,9 +56,9 @@ public:
 		shader = drawShader.name.c_str();
 		glUseProgram(*drawShader);
 
-		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getProjection()));
-		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.getView()));
-		setUniform("CamTransform", nsfw::UNIFORM::MAT4, glm::value_ptr(cam.transform));
+		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getProjection()));
+		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getView()));
+		setUniform("CamTransform", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->transform));
 
 		setUniform("size", nsfw::UNIFORM::FLO1, &size);
 		setUniform("color", nsfw::UNIFORM::FLO4, glm::value_ptr(color));
@@ -70,9 +70,11 @@ public:
 		{
 			glBindVertexArray(*VAO_0);
 		}
-		glDrawArrays(GL_POINT, 0, maxParicles);
+		glDrawArrays(GL_POINTS, 0, maxParicles);
 
 		updatingBuffer0 = !updatingBuffer0;
+
+		glUseProgram(0);
 	}
 
 	void init(const char* in_assetName, const char* in_drawShaderName, const char* in_updatShaderName, unsigned int in_maxParticles = 100) {
@@ -110,8 +112,6 @@ public:
 	//direction will be random
 	float size;
 	glm::vec4 color;
-
-	nsfw::Asset<nsfw::ASSET::FBO> targetBuffer;
 
 private:
 	bool updatingBuffer0;

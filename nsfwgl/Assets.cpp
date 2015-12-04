@@ -105,8 +105,8 @@ bool nsfw::Assets::makeVAO(const char *name, unsigned particleMax) {
 	ASSET_LOG(GL_HANDLE_TYPE::VAO);
 	ASSET_LOG(GL_HANDLE_TYPE::VAO);
 
-	GL_HANDLE* VAOs = 0;
-	GL_HANDLE* VBOs = 0;
+	GL_HANDLE* VAOs = new GL_HANDLE[2];
+	GL_HANDLE* VBOs = new GL_HANDLE[2];
 
 	glGenVertexArrays(2, VAOs);
 	glGenBuffers(2, VBOs);
@@ -360,6 +360,19 @@ bool nsfw::Assets::loadShader(const char *name, const char *vpath, const char *g
 	glAttachShader(newProgram, fragShader);
 	glLinkProgram(newProgram);
 
+	int success = 0;
+
+	glGetProgramiv(newProgram, GL_LINK_STATUS, &success);
+	if (success == GL_FALSE) {
+		int infoLogLength = 0;
+		glGetProgramiv(newProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
+		char* infoLog = new char[infoLogLength];
+		glGetProgramInfoLog(newProgram, infoLogLength, 0, infoLog);
+		printf("Error: Failed to link shader program!\n");
+		printf("%s\n", infoLog);
+		delete[] infoLog;
+	}
+
 	glDeleteShader(vertShader);
 	glDeleteShader(geomShader);
 	glDeleteShader(fragShader);
@@ -392,6 +405,19 @@ bool nsfw::Assets::loadFeedBackShader(const char *name, const char *vpath) {
 	glTransformFeedbackVaryings(newProgram, 4, varNames, GL_INTERLEAVED_ATTRIBS);
 
 	glLinkProgram(newProgram);
+
+	int success = 0;
+
+	glGetProgramiv(newProgram, GL_LINK_STATUS, &success);
+	if (success == GL_FALSE) {
+		int infoLogLength = 0;
+		glGetProgramiv(newProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
+		char* infoLog = new char[infoLogLength];
+		glGetProgramInfoLog(newProgram, infoLogLength, 0, infoLog);
+		printf("Error: Failed to link shader program!\n");
+		printf("%s\n", infoLog);
+		delete[] infoLog;
+	}
 
 	glDeleteShader(vertShader);
 

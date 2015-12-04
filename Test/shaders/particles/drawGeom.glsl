@@ -14,7 +14,7 @@ uniform mat4 View;
 uniform mat4 CamTransform;
 
 uniform float size;
-uniform float color;
+uniform vec4 color;
 
 void main() {
 	fColor = color;
@@ -30,17 +30,17 @@ void main() {
 	vec3 zAxis = normalize( CamTransform[3].xyz - pPosition[0] );
 	vec3 xAxis = cross( CamTransform[1].xyz, zAxis);
 	vec3 yAxis = cross( zAxis, xAxis );
-	mat3 bilboard = mat3(xAxis,, yAxis, zAxis);
+	mat3 bilboard = mat3(xAxis, yAxis, zAxis);
 	
-	gl_Position = Projection * View * vec4(bilboard * corners[0] + pPosition[0], 1);
+	gl_Position = (Projection * View) * vec4(bilboard * corners[0] + pPosition[0], 1);
 	EmitVertex();
 	
-	gl_Position = Projection * View * vec4(bilboard * corners[1] + pPosition[1], 1);
+	gl_Position = (Projection * View) * vec4(bilboard * corners[1] + pPosition[0], 1);
 	EmitVertex();
 	
-	gl_Position = Projection * View * vec4(bilboard * corners[2] + pPosition[2], 1);
+	gl_Position = (Projection * View) * vec4(bilboard * corners[2] + pPosition[0], 1);
 	EmitVertex();
 	
-	gl_Position = Projection * View * vec4(bilboard * corners[3] + pPosition[3], 1);
+	gl_Position = (Projection * View) * vec4(bilboard * corners[3] + pPosition[0], 1);
 	EmitVertex();
 }

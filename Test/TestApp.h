@@ -10,6 +10,7 @@
 #include "lightPass.h"
 #include "ShadowPass.h"
 #include "ShadowLighting.h"
+#include "GPUParticlesPass.h"
 
 #include "ForwardPass.h"
 #include "CompPass.h"
@@ -26,6 +27,8 @@ class TestApp : public nsfw::Application {
 	GameObject go3;
 	DirectionLight dl;
 	ParticleEmitter pe;
+
+	GPUParticleEmitter gpuPE;
 
 	//passes
 	GeoPass gp;
