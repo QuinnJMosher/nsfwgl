@@ -53,6 +53,7 @@ public:
 		glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, 0);
 
 		//Draw
+		glEnable(GL_DEPTH_TEST);
 		shader = drawShader.name.c_str();
 		glUseProgram(*drawShader);
 
@@ -72,8 +73,11 @@ public:
 		}
 		glDrawArrays(GL_POINTS, 0, maxParicles);
 
+		//swap the updating buffer and drawing buffer
 		updatingBuffer0 = !updatingBuffer0;
 
+		//cleanup deaw
+		glDisable(GL_DEPTH_TEST);;
 		glUseProgram(0);
 	}
 

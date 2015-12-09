@@ -23,7 +23,7 @@ void TestApp::onStep() {
 	gp.prep();
 	gp.draw(go1, cam);
 	//gp.draw(go2, cam);
-	//gp.draw(go3, cam);
+	gp.draw(go3, cam);
 	//gp.drawEmitter(pe, cam);
 	gp.post();
 
@@ -31,11 +31,11 @@ void TestApp::onStep() {
 	gpuPE.Update(time, cam);
 	gpuPE.Post();
 
-	/*sp.prep();
-	sp.draw(go3, dl);
+	sp.prep();
 	sp.draw(go1, dl);
-	sp.draw(go2, dl);
-	sp.post();*/
+	//sp.draw(go2, dl);
+	sp.draw(go3, dl);
+	sp.post();
 
 	lp.prep();
 	lp.draw(dl, cam);
@@ -69,7 +69,7 @@ void TestApp::onPlay() {
 
 	//ass.loadTexture("tex", "./assets/crate.png");
 	ass.loadFBX("spear", "./assets/soulspear/soulspear.fbx");
-	ass.loadFBX("bunny", "./assets/bunny/Bunny.fbx");
+	//ass.loadFBX("bunny", "./assets/bunny/Bunny.fbx");
 
 	const char* baseTexNames[] = { "fboTex1" };
 	unsigned baseTexDepths[] = { nsfw::DEPTH::RGB };
@@ -151,7 +151,7 @@ void TestApp::onPlay() {
 	dl.color = glm::vec3(0.7f, 0.7f, 0.7f);
 
 	//setup composite
-	cp.diffusePassTex = "geoDiffuse";
+	cp.diffusePassTex = "shadowTex";
 	cp.lightPassTex = "lightTex";
 	cp.shader = "composit";
 
