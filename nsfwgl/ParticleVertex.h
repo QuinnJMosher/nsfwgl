@@ -8,7 +8,7 @@ namespace nsfw
 	{
 		glm::vec3 position;
 		glm::vec3 velocity;
-		float size;
+		float lifeSpan;
 		float lifeTime;
 	};
 

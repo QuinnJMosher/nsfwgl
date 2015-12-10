@@ -41,15 +41,15 @@ void TestApp::onStep() {
 	lp.draw(dl, cam);
 	lp.post();
 
-	//slp.prep();
-	//slp.draw(go1, dl, cam);
-	////slp.draw(go2, dl, cam);
-	//slp.draw(go3, dl, cam);
-	//slp.post();
+	slp.prep();
+	slp.draw(go1, dl, cam);
+	//slp.draw(go2, dl, cam);
+	slp.draw(go3, dl, cam);
+	slp.post();
 
-	cp.prep();
+	/*cp.prep();
 	cp.draw();
-	cp.post();
+	cp.post();*/
 
 	/*fp.prep();
 	fp.draw();
@@ -167,14 +167,16 @@ void TestApp::onPlay() {
 	//setup gpu particles
 	ass.loadShader("partDrawing", "./shaders/particles/drawVert.glsl", "./shaders/particles/drawGeom.glsl", "./shaders/particles/drawFrag.glsl");
 	ass.loadFeedBackShader("partUpdating", "./shaders/particles/updateVert.glsl");
-	gpuPE.init("gpuParticle0", "partDrawing", "partUpdating", 100);
+	gpuPE.init("gpuParticle0", "partDrawing", "partUpdating", 5000);
 	gpuPE.fbo = "geoBuff";
 	gpuPE.position = glm::vec3(-10, 0, 0);
-	gpuPE.lifeSpan = 3;
+	//gpuPE.lifeSpan = 3;
+	gpuPE.maxLifeSpan = 3;
+	gpuPE.minLifespan = 1;
 	gpuPE.emmissionInterval = 0.2;//currently unused
 	gpuPE.speed = 5;
-	gpuPE.size = 1;
-	gpuPE.color = glm::vec4(1.f, 0.f, 1.f, 1.f);
+	gpuPE.size = .11;
+	gpuPE.color = glm::vec4(1.f, 0.f, 0.f, 1.f);
 
 	//setup camera
 	//fly cam only

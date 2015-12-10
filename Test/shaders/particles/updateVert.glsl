@@ -2,17 +2,18 @@
 
 layout(location = 0) in vec3 Position;
 layout(location = 1) in vec3 Velocity;
-layout(location = 2) in float Size;
+layout(location = 2) in float LifeSpan;
 layout(location = 3) in float LifeTime;
 
 out vec3 position;
 out vec3 velocity;
-out float size;
+out float lifeSpan;
 out float lifeTime;
 
 uniform float time;
 uniform float deltaTime;
-uniform float lifeSpan;
+uniform float maxLifeSpan;
+uniform float minLifeSpan;
 uniform float speed;
 uniform vec3 emitterPosition;
 
@@ -30,7 +31,7 @@ void main() {
 	position = Position + (Velocity * deltaTime);
 	velocity = Velocity;
 	lifeTime = LifeTime + deltaTime;
-	size = Size;
+	lifeSpan = LifeSpan;
 	
 	if (LifeTime > lifeSpan) {
 		uint seed = uint(time * 1000.0) + uint(gl_VertexID);
@@ -40,6 +41,6 @@ void main() {
 		velocity = normalize(velocity) * speed;
 		position = emitterPosition;
 		lifeTime = 0;
-		size = 0;//probably moot;
+		lifeSpan = rand(seed++, maxLifeSpan - minLifeSpan) + minLifeSpan;
 	}
 }

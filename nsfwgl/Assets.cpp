@@ -400,7 +400,7 @@ bool nsfw::Assets::loadFeedBackShader(const char *name, const char *vpath) {
 	GL_HANDLE newProgram = glCreateProgram();
 	glAttachShader(newProgram, vertShader);
 
-	const char* varNames[] = { "position", "velocity", "size", "lifeTime" };
+	const char* varNames[] = { "position", "velocity", "lifeSpan", "lifeTime" };
 
 	glTransformFeedbackVaryings(newProgram, 4, varNames, GL_INTERLEAVED_ATTRIBS);
 

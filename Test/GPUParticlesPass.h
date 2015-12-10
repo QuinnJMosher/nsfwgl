@@ -29,7 +29,8 @@ public:
 		setUniform("deltaTime", nsfw::UNIFORM::FLO1, &deltaTime);
 
 		setUniform("emitterPosition", nsfw::UNIFORM::FLO3, glm::value_ptr(position));
-		setUniform("lifeSpan", nsfw::UNIFORM::FLO1, &lifeSpan);
+		setUniform("maxLifeSpan", nsfw::UNIFORM::FLO1, &maxLifeSpan);
+		setUniform("minLifeSpan", nsfw::UNIFORM::FLO1, &minLifespan);
 		setUniform("emissionInterval", nsfw::UNIFORM::FLO1, &emmissionInterval);
 		setUniform("speed", nsfw::UNIFORM::FLO1, &speed);
 		setUniform("size", nsfw::UNIFORM::FLO1, &size);
@@ -100,9 +101,11 @@ public:
 		float lastDrawTime = 0.f;
 
 		position = glm::vec3(0.f, 0.f, 0.f);
-		lifeSpan = 2.f;
+		//lifeSpan = 2.f;
 		speed    = 1.f;
-		size	 = 1.f;
+		size = 1.f;
+		maxLifeSpan = 3.f;
+		minLifespan = 1.f;
 		color	 = glm::vec4(1.f, 0.f, 0.f, 1.f);
 
 	}
@@ -110,11 +113,13 @@ public:
 
 	glm::vec3 position;
 
-	float lifeSpan;
+	//float lifeSpan;
 	float emmissionInterval;
 	float speed;
 	//direction will be random
 	float size;
+	float maxLifeSpan;
+	float minLifespan;
 	glm::vec4 color;
 
 private:
