@@ -33,7 +33,15 @@ public:
 
 		setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
 		unsigned texVal = *go.diffuse;
-		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &texVal);
+		setUniform("Diffuse", nsfw::UNIFORM::TEX2, &texVal, 0);
+
+		texVal = (int)go.useNormMap;
+		setUniform("useNormMap", nsfw::UNIFORM::INT1, &texVal);
+
+		if (go.useNormMap) {
+			texVal = *go.normMap;
+			setUniform("NormalMap", nsfw::UNIFORM::TEX2, &texVal, 1);
+		}
 
 		glBindVertexArray(*go.mesh);
 		glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);
@@ -45,7 +53,9 @@ public:
 
 		
 		setUniform("Diffuse", nsfw::UNIFORM::TEX2, pe.particleTex);
-		
+
+		int texVal = (int)false;
+		setUniform("useNormMap", nsfw::UNIFORM::INT1, &texVal);
 
 		for (unsigned i = 0; i < pe.GetFirstEmptyLocation(); i++) {
 			assert(pe.IsParticleAlive(i));

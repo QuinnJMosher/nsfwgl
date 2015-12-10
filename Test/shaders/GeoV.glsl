@@ -7,6 +7,8 @@ layout(location = 3) in vec2 TexCoord;
 
 out vec4 vPosition;
 out vec4 vNormal;
+out vec4 vTangent;
+out vec4 vBiTangent;
 out vec2 vTexCoord;
 
 uniform mat4 Projection;
@@ -17,5 +19,7 @@ void main() {
 	gl_Position = Projection * View * Model * Position;
 	vTexCoord = TexCoord;
 	vNormal = normalize(Model * Normal);
+	vTangent = Model * Tangent;
+	vBiTangent = Model * vec4(cross(Normal.xyz, Tangent.xyz), 0);
 	vPosition = (View * Model * Position);
 }

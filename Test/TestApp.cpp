@@ -78,16 +78,20 @@ void TestApp::onPlay() {
 
 	go1.trasform = glm::mat4(1);
 	go1.diffuse = "spear_soulspear_diffuse.tga";
+	go1.normMap = "spear_soulspear_normal.tga";
+	go1.useNormMap = true;
 	go1.mesh = "spear_SoulSpear_Low:SoulSpear_Low1";
 	go1.tris = "spear_SoulSpear_Low:SoulSpear_Low1";
 
 	go2.trasform = glm::translate(glm::vec3(-10.0f, 0.0f, 0.0f)) * glm::scale(glm::vec3(0.7f, 0.7f, 0.7f));
 	go2.diffuse = "Cyan";
+	go2.useNormMap = false;
 	go2.mesh = "bunny_Mesh";
 	go2.tris = "bunny_Mesh";
 
 
 	go3.trasform = glm::rotate(90.f, glm::vec3(1, 0, 0)) * glm::scale(20.f,20.f,1.f);
+	go3.useNormMap = false;
 	go3.mesh = "Quad";
 	go3.tris = "Quad";
 	go3.diffuse = "Cyan";
@@ -151,7 +155,7 @@ void TestApp::onPlay() {
 	dl.color = glm::vec3(0.7f, 0.7f, 0.7f);
 
 	//setup composite
-	cp.diffusePassTex = "geoDiffuses";
+	cp.diffusePassTex = "geoDiffuse";
 	cp.lightPassTex = "lightTex";
 	cp.shader = "composit";
 

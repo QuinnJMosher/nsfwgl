@@ -11,5 +11,7 @@ struct GameObject
 	nsfw::Asset<nsfw::ASSET::VERTEX_COUNT> tris;
 
 	nsfw::Asset<nsfw::ASSET::TEXTURE> diffuse;
+	bool useNormMap = false;
+	nsfw::Asset<nsfw::ASSET::TEXTURE> normMap;
 
 };
