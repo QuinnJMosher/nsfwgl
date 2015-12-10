@@ -3,7 +3,7 @@
 in vec2 vTexCoord;
 out vec3 LightOutput;
 
-uniform float shadowBias = 0.2;
+uniform float shadowBias = 0.001;
 
 uniform vec3 CameraPos;
 uniform float SpecPow = 25;
@@ -25,8 +25,8 @@ void main() {
 	vec3 normal = normalize(texture(NormMap, vTexCoord).xyz);
 	vec3 position = texture(PosMap, vTexCoord).xyz;
 	vec3 eye = normalize(CameraPos - position); // for specular and deprojection
-	vec3 vLightDir = normalize((View * vec4(-lightDirection, 0)).xyz);
-	//vec3 vLightDir = normalize(-lightDirection);
+	vec3 vLightDir = normalize((View * vec4(lightDirection, 0)).xyz);
+	//vec3 vLightDir = normalize(lightDirection);
 	
 	vec4 shadowCoord = texSpaceOff * lightProjection * lightView 
 							* inverse(View)  * vec4(position, 1);
@@ -37,7 +37,7 @@ void main() {
 	float lambert = max(0, dot(normalize(normal), vLightDir));
 	vec3 diffuse = lambert * lightDiffuse;
 	
-	vec3 R = normalize(reflect(vLightDir, normal));
+	vec3 R = reflect(-vLightDir, normal);
 	
 	float specTerm = pow(max(0.0f, dot(R, eye)), SpecPow);
 	vec3 specular = lightDiffuse * specTerm;
@@ -45,10 +45,10 @@ void main() {
 	
 	if (shadowValue.z < shadowCoord.z) {
 		LightOutput = ambient;
-		//LightOutput = vec3(1, 0, 0);
+		LightOutput = vec3(1, 0, 0);
 	} else {
 		LightOutput = (ambient + diffuse + specular);
-		//LightOutput = vec3(0, 0, 1);
+		LightOutput = vec3(0, 0, 1);
 	}
 	
 	LightOutput = ambient + diffuse + specular;//cancel out shadowing

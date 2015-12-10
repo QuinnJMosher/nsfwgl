@@ -16,7 +16,7 @@ uniform mat4 View;
 uniform mat4 Model;
 
 void main() {
-	vNormal = Projection * View * Model * Normal;
+	vNormal =  Model * Normal;
 	gl_Position = Projection * View * Model * Position;
 
 	vShadowCoord = texSpaceOff * lightProjection * lightView * Model * Position;

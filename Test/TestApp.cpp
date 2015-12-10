@@ -18,7 +18,7 @@ void TestApp::onStep() {
 	}
 
 	cam->update(time);
-	pe.Update(time);
+	//pe.Update(time);
 
 	gp.prep();
 	gp.draw(go1, cam);
@@ -41,11 +41,11 @@ void TestApp::onStep() {
 	lp.draw(dl, cam);
 	lp.post();
 
-	/*slp.prep();
-	slp.draw(go3, dl, cam);
-	slp.draw(go1, dl, cam);
-	slp.draw(go2, dl, cam);
-	slp.post();*/
+	//slp.prep();
+	//slp.draw(go1, dl, cam);
+	////slp.draw(go2, dl, cam);
+	//slp.draw(go3, dl, cam);
+	//slp.post();
 
 	cp.prep();
 	cp.draw();
@@ -147,11 +147,11 @@ void TestApp::onPlay() {
 	slp.ShadowMap = "shadowTex";
 
 	//setup light
-	dl.direction = glm::normalize(glm::vec3(0, -1, 1));
+	dl.direction = glm::normalize(-glm::vec3(0, -1, 1));
 	dl.color = glm::vec3(0.7f, 0.7f, 0.7f);
 
 	//setup composite
-	cp.diffusePassTex = "shadowTex";
+	cp.diffusePassTex = "geoDiffuses";
 	cp.lightPassTex = "lightTex";
 	cp.shader = "composit";
 

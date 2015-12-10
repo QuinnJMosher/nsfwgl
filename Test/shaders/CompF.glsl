@@ -11,6 +11,6 @@ void main() {
 	vec3 lightVal = texture(Light, vTexCoord).rgb;
 	
 	//FragColor = vec4(diffuseVal * lightVal, 1);
-	FragColor = vec4(diffuseVal, 1);
-	//FragColor = texture(Light, vTexCoord);//vec4(diffuseVal, 1);
+	//FragColor = vec4(diffuseVal, 1);
+	FragColor = texture(Light, vTexCoord);//vec4(diffuseVal, 1);
 }

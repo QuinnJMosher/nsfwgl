@@ -11,7 +11,7 @@ uniform float shadowBais = 0.01;
 
 void main() {
 	
-	float d = max(0, dot(normalize(vNormal.xyz), -lightDirection));
+	float d = max(0, dot(normalize(vNormal.xyz), lightDirection));
 	
 	vec4 shadowColor = texture(shadowMap, vShadowCoord.xy);
 	
