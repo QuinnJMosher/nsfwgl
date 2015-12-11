@@ -52,7 +52,7 @@ void main() {
 	}
 	
 	LightOutput = ambient + diffuse + specular;//cancel out shadowing
-	//LightOutput = specular;//cancel out shadowing
+	LightOutput = diffuse;//cancel out shadowing
 	
 	//LightOutput = shadowValue.xyz;
 	//LightOutput = (inverse(View) * vec4(position,1)).xyz;

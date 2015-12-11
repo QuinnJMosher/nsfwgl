@@ -29,6 +29,6 @@ void main() {
 			normalize( vBiTangent.xyz ),
 			normalize( vNormal.xyz ));
 			
-		tNormals = TBN * vNormal.xyz;
+		tNormals = TBN * normalize(texture(NormalMap, vTexCoord).xyz*2-1);
 	}
 }

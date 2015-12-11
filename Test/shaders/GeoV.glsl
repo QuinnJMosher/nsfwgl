@@ -18,8 +18,8 @@ uniform mat4 Model;
 void main() {
 	gl_Position = Projection * View * Model * Position;
 	vTexCoord = TexCoord;
-	vNormal = normalize(Model * Normal);
-	vTangent = Model * Tangent;
-	vBiTangent = Model * vec4(cross(Normal.xyz, Tangent.xyz), 0);
+	vNormal = normalize(View * Model * Normal);
+	vTangent = normalize(View * Model * Tangent);
+	vBiTangent = normalize(View * Model * vec4(cross(Normal.xyz, Tangent.xyz), 0));
 	vPosition = (View * Model * Position);
 }

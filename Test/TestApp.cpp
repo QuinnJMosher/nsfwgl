@@ -13,7 +13,7 @@ void TestApp::onStep() {
 		pe.MakeParticle();
 		inputDown = true;
 	}
-	else {
+	else if (!nsfw::Window::instance().getKey('P')) {
 		inputDown = false;
 	}
 
@@ -33,7 +33,7 @@ void TestApp::onStep() {
 
 	sp.prep();
 	sp.draw(go1, dl);
-	//sp.draw(go2, dl);
+	//sp.draw(go2, dl);e
 	sp.draw(go3, dl);
 	sp.post();
 
@@ -41,15 +41,15 @@ void TestApp::onStep() {
 	lp.draw(dl, cam);
 	lp.post();
 
-	slp.prep();
-	slp.draw(go1, dl, cam);
-	//slp.draw(go2, dl, cam);
-	slp.draw(go3, dl, cam);
-	slp.post();
+	//slp.prep();
+	//slp.draw(go1, dl, cam);
+	////slp.draw(go2, dl, cam);
+	//slp.draw(go3, dl, cam);
+	//slp.post();
 
-	/*cp.prep();
+	cp.prep();
 	cp.draw();
-	cp.post();*/
+	cp.post();
 
 	/*fp.prep();
 	fp.draw();
