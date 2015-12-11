@@ -20,16 +20,13 @@ void TestApp::onStep() {
 	cam->update(time);
 	//pe.Update(time);
 
-	gp.prep();
-	gp.draw(go1, cam);
-	//gp.draw(go2, cam);
-	gp.draw(go3, cam);
-	//gp.drawEmitter(pe, cam);
-	gp.post();
+	//gp.prep();
+	//gp.draw(go1, cam);
+	////gp.draw(go2, cam);
+	//gp.draw(go3, cam);
+	////gp.drawEmitter(pe, cam);
+	//gp.post();
 
-	gpuPE.Prep();
-	gpuPE.Update(time, cam);
-	gpuPE.Post();
 
 	sp.prep();
 	sp.draw(go1, dl);
@@ -37,19 +34,23 @@ void TestApp::onStep() {
 	sp.draw(go3, dl);
 	sp.post();
 
-	lp.prep();
+	/*lp.prep();
 	lp.draw(dl, cam);
-	lp.post();
+	lp.post();*/
 
-	//slp.prep();
-	//slp.draw(go1, dl, cam);
-	////slp.draw(go2, dl, cam);
-	//slp.draw(go3, dl, cam);
-	//slp.post();
+	slp.prep();
+	slp.draw(go1, dl, cam);
+	//slp.draw(go2, dl, cam);
+	slp.draw(go3, dl, cam);
+	slp.post();
 
-	cp.prep();
-	cp.draw();
-	cp.post();
+	gpuPE.Prep();
+	gpuPE.Update(time, cam);
+	gpuPE.Post();
+
+	//cp.prep();
+	//cp.draw();
+	//cp.post();
 
 	/*fp.prep();
 	fp.draw();

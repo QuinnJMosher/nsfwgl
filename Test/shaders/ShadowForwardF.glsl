@@ -1,13 +1,20 @@
 #version 410
 
+in vec4 vPosition;
 in vec4 vNormal;
+in vec4 vTan;
+in vec4 vBiTan;
 in vec4 vShadowCoord;
+in vec2 vUV;
 
 out vec4 FragColor;
 
 uniform vec3 lightDirection;
-uniform sampler2D shadowMap;
 uniform float shadowBais = 0.01;
+
+uniform sampler2D shadowMap;
+uniform sampler2D albedo;
+uniform sampler2D normalMap;
 
 void main() {
 	

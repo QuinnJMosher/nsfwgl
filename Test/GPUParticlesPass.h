@@ -11,7 +11,8 @@ class GPUParticleEmitter : public nsfw::RenderPass {
 	
 public:
 	void Prep() {
-		glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
+		//glBindFramebuffer(GL_FRAMEBUFFER, *fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	void Post() {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
