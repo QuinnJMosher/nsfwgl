@@ -8,12 +8,50 @@ void TestApp::onStep() {
 	float time = nsfw::Window::instance().getTime();
 	go1.trasform = glm::rotate(time * 10, glm::vec3(0, 1, 0)) * glm::scale(3.f, 3.f, 3.f);
 
-	//force emit particle
-	if (nsfw::Window::instance().getKey('P') && !inputDown) {
-		pe.MakeParticle();
+	//shitty input handeling
+	if (nsfw::Window::instance().getKey('N') && !inputDown) {
+		go1.useNormMap = !go1.useNormMap;
 		inputDown = true;
 	}
-	else if (!nsfw::Window::instance().getKey('P')) {
+
+	if (nsfw::Window::instance().getKey('Z') && !inputDown) {
+		slp.db_useSpec = !slp.db_useSpec;
+		inputDown = true;
+	}
+
+	if (nsfw::Window::instance().getKey('X') && !inputDown) {
+		slp.db_useDiffuse = !slp.db_useDiffuse;
+		inputDown = true;
+	}
+
+	if (nsfw::Window::instance().getKey('C') && !inputDown) {
+		slp.db_useAmbient = !slp.db_useAmbient;
+		inputDown = true;
+	}
+
+	if (nsfw::Window::instance().getKey('V') && !inputDown) {
+		slp.db_useShadow = !slp.db_useShadow;
+		inputDown = true;
+	}
+
+	if (nsfw::Window::instance().getKey('B') && !inputDown) {
+		slp.db_useColor = !slp.db_useColor;
+		inputDown = true;
+	}
+
+	if (nsfw::Window::instance().getKey('M') && !inputDown) {
+		drawParticle = !drawParticle;
+		inputDown = true;
+	}
+
+	char inputKeys[] = { 'Z', 'X', 'C', 'V', 'B', 'N', 'M' };
+	bool anyKeysDown = false;
+	for (char item : inputKeys) {
+		if (nsfw::Window::instance().getKey(item)) {
+			anyKeysDown = true;
+		}
+	}
+	if (!anyKeysDown) {
 		inputDown = false;
 	}
 
@@ -44,9 +82,11 @@ void TestApp::onStep() {
 	slp.draw(go3, dl, cam);
 	slp.post();
 
-	gpuPE.Prep();
-	gpuPE.Update(time, cam);
-	gpuPE.Post();
+	if (drawParticle) {
+		gpuPE.Prep();
+		gpuPE.Update(time, cam);
+		gpuPE.Post();
+	}
 
 	//cp.prep();
 	//cp.draw();
@@ -194,6 +234,7 @@ void TestApp::onPlay() {
 
 	//lazy input stuff
 	inputDown = false;
+	drawParticle = true;
 }
 
 void TestApp::onInit() {

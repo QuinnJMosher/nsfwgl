@@ -19,6 +19,7 @@ class TestApp : public nsfw::Application {
 
 	//lazy input handling
 	bool inputDown;
+	bool drawParticle;
 	
 	//objects
 	Camera* cam;

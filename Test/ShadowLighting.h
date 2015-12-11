@@ -14,6 +14,12 @@ public:
 
 	nsfw::Asset<nsfw::ASSET::TEXTURE>ShadowMap;
 
+	bool db_useSpec = true;
+	bool db_useDiffuse = true;
+	bool db_useAmbient = true;
+	bool db_useShadow = true;
+	bool db_useColor = true;
+
 	void prep()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -37,7 +43,18 @@ public:
 		glm::mat4 texSpaceOff = glm::translate(.5f, .5f, .5f)*glm::scale(.5f,.5f,.5f);
 		setUniform("texSpaceOff", nsfw::UNIFORM::MAT4, glm::value_ptr(texSpaceOff));
 
-		setUniform("shadowMap", nsfw::UNIFORM::TEX2, ShadowMap, 0);
+		unsigned texVal = *ShadowMap;
+		setUniform("shadowMap", nsfw::UNIFORM::TEX2, &texVal, 0);
+		texVal = *go.diffuse;
+		setUniform("albedo", nsfw::UNIFORM::TEX2, &texVal, 1);
+
+		texVal = (int)go.useNormMap;
+		setUniform("useNormMap", nsfw::UNIFORM::INT1, &texVal);
+
+		if (go.useNormMap) {
+			texVal = *go.normMap;
+			setUniform("normalMap", nsfw::UNIFORM::TEX2, &texVal, 2);
+		}
 
 		setUniform("lightDirection", nsfw::UNIFORM::FLO3, glm::value_ptr(lt.direction));
 
@@ -46,8 +63,20 @@ public:
 
 		setUniform("Model", nsfw::UNIFORM::MAT4, glm::value_ptr(go.trasform));
 
+		setUniform("cameraPos", nsfw::UNIFORM::FLO3, glm::value_ptr(cam->transform[3]));
 		setUniform("Projection", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getProjection()));
 		setUniform("View", nsfw::UNIFORM::MAT4, glm::value_ptr(cam->getView()));
+
+		unsigned intVal = (int)db_useSpec;
+		setUniform("db_useSpec", nsfw::UNIFORM::INT1, &intVal);
+		intVal = (int)db_useDiffuse;
+		setUniform("db_useDiffuse", nsfw::UNIFORM::INT1, &intVal);
+		intVal = (int)db_useAmbient;
+		setUniform("db_useAmbient", nsfw::UNIFORM::INT1, &intVal);
+		intVal = (int)db_useShadow;
+		setUniform("db_useShadow", nsfw::UNIFORM::INT1, &intVal);
+		intVal = (int)db_useColor;
+		setUniform("db_useColor", nsfw::UNIFORM::INT1, &intVal);
 
 		glBindVertexArray(*go.mesh);
 		glDrawElements(GL_TRIANGLES, *go.tris, GL_UNSIGNED_INT, 0);

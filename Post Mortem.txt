@@ -1,0 +1,7 @@
+The last time I had a project in openGL I left it knowing how to do exactly what I had been shown and not knowing at all
+how they worked. After this project I now understand the idea of computer memory and video memoy and the differences in how
+they are managed, as well as how shaders can be used to efficently draw large numbers of items, lights particles and how to
+apply effects to all of them. I ran into a major issue towards the end with view dependency on my light, this was never 
+acutally solved and forced a small refactor though the refactor allowed a good quick review and the search made me more
+familiar with the codebase that was working. Were I given the project agin I would make sure to consider the rendering as a
+whole as apposed to the part by part way working with tutorials forced me to work in;
